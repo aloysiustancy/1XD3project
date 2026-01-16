@@ -11,20 +11,34 @@ much here, but you could put in at least one placeholder with graphics to make i
     <meta name="viewport" content="width=device-width">
     <title>Project</title>
     <style>
-        #body {
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
         }
 
-        #img {
-            border: 5px solid #62f500;
+        .graphic-container {
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 10px;
+            border: 2px solid black;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 
 <body>
-    <div id="container">
-        <h1>This is Project</h1>
-        <img src="images/Image_placeholder.png" width="500" height="600">
+    <div id="title">
+        <h1>That One Goose</h1>
+        <h2>The Official Website of That One Goose</h2>
+    </div>
+    <div id="nav">
+        <a class="button" href="https://cs1xd3.cas.mcmaster.ca/~tana42/team/">Homepage</a>
+        <a class="button" href="https://cs1xd3.cas.mcmaster.ca/~tana42/team/about.html">About Us</a>
+        <a class="button" href="https://cs1xd3.cas.mcmaster.ca/~tana42/team/project.html">Project</a>
+        <a class="button" href="https://cs1xd3.cas.mcmaster.ca/~tana42/team/showcase.html">Showcase</a>
+    </div>
+    <div class="graphic-container">
+        <img src="https://placehold.co/800x400?text=Graphic+Placeholder" alt="Main Graphic">
     </div>
 </body>
 
