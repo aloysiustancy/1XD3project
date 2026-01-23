@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 html, body {
@@ -17,7 +16,7 @@ html, body {
     padding: 0;
 }
 
-#nav .button {
+.button {
     flex: 1; 
     background-color: #9fb6c3;
     text-decoration: none;
