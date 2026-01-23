@@ -1,5 +1,5 @@
 #nav {
-    background-color: rgb(255, 231, 46);
+    background-color: #f9e9de;
     padding: 2px;
     margin-bottom: 20px;
     display: flex;
@@ -7,7 +7,7 @@
 }
 
 .button {
-    background-color: rgb(19, 141, 100);
+    background-color: #9fb6c3;
     text-decoration: none;
     color: white;
     padding: 20px;
