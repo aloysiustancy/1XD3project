@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Breathing Exercise</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+    .container{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:20px;
+    }
+
+    svg{
+        transform:rotate(-90deg);
+    }
+
+    .bg{
+        fill:none;
+        stroke:#334155;
+        stroke-width:15;
+    }
+
+    #progress{
+        fill:none;
+        stroke:#38bdf8;
+        stroke-width:15;
+        stroke-linecap:round;
+        stroke-dasharray:565;
+        stroke-dashoffset:565;
+    }
+
+    button{
+        padding:10px 20px;
+        font-size:16px;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    #startBtn{
+        background:#22c55e;
+    }
+
+    #stopBtn{
+        background:#ef4444;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<h1>Breathing Exercise</h1>
+
+<div class="container">
+
+<svg width="220" height="220">
+
+    <circle
+        class="bg"
+        cx="110"
+        cy="110"
+        r="90"
+    />
+
+    <circle
+        id="progress"
+        cx="110"
+        cy="110"
+        r="90"
+    />
+
+</svg>
+
+<h2 id="instruction">Press Start</h2>
+
+<button id="startBtn">Start</button>
+<button id="stopBtn">Stop</button>
+
+<script src="script/breathing.js"></script>
+</body>
+</html>

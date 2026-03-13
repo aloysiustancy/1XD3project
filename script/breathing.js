@@ -1,33 +1,63 @@
-function genRandom(){
-    return Math.floor(Math.random() * 201) - 100;
+const progress = document.getElementById("progress");
+const instruction = document.getElementById("instruction");
+
+const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
+
+const circumference = 2 * Math.PI * 90;
+
+let timer = null;
+
+const phases = [
+    { name:"Inhale", duration:4000 },
+    { name:"Hold", duration:7000 },
+    { name:"Exhale", duration:8000 }
+];
+
+let phaseIndex = 0;
+
+function animateRing(duration){
+
+    progress.style.transition = "none";
+    progress.style.strokeDashoffset = circumference;
+
+    setTimeout(() => {
+
+        progress.style.transition = `stroke-dashoffset ${duration}ms linear`;
+        progress.style.strokeDashoffset = 0;
+
+    }, 20);
 }
 
-function sum(a, b){
-    return a + b;
+function nextPhase(){
+
+    const phase = phases[phaseIndex];
+
+    instruction.textContent = phase.name;
+
+    animateRing(phase.duration);
+
+    timer = setTimeout(() => {
+
+        phaseIndex = (phaseIndex + 1) % phases.length;
+        nextPhase();
+
+    }, phase.duration);
 }
 
-let playAgain = true;
+startBtn.onclick = () => {
 
-while (playAgain) {
-
-    let num1 = genRandom();
-    let num2 = genRandom();
-    let result = sum(num1, num2);
-
-    let answer;
-
-  
-    while (true) {
-        answer = prompt(`What is the sum of ${num1} and ${num2}?`);
-
-        if (parseInt(answer) === result){
-            alert("Correct!");
-            break;   t
-        } else {
-            alert("Incorrect. Try again.");
-        }
+    if(!timer){
+        nextPhase();
     }
-    playAgain = confirm("Do you want to play again?");
+
 }
 
-alert("Goodbye!");
+stopBtn.onclick = () => {
+
+    clearTimeout(timer);
+    timer = null;
+
+    instruction.textContent = "Paused";
+
+}
