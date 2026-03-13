@@ -424,6 +424,22 @@ a:hover {
     color: #fff;
 }
 
+.myth{
+    background:#f9fbff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:15px;
+}
+
+.myth strong{
+    color:#c0392b;
+}
+
+.fact{
+    color:#2c7a3f;
+    margin-top:5px;
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
     #nav {
