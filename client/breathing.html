@@ -5,9 +5,31 @@
 <title>Breathing Exercise</title>
 <link rel="stylesheet" href="style.css">
 <style>
-    canvas{
-        background:#020617;
-        border-radius:50%;
+
+    .container{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:20px;
+    }
+
+    svg{
+        transform:rotate(-90deg);
+    }
+
+    .bg{
+        fill:none;
+        stroke:#334155;
+        stroke-width:15;
+    }
+
+    #progress{
+        fill:none;
+        stroke:#38bdf8;
+        stroke-width:15;
+        stroke-linecap:round;
+        stroke-dasharray:565;
+        stroke-dashoffset:565;
     }
 
     button{
@@ -20,7 +42,7 @@
 
     #startBtn{
         background:#22c55e;
-    }  
+    }
 
     #stopBtn{
         background:#ef4444;
