@@ -1,93 +1,291 @@
-* {
-    margin: 0;
-    padding: 0;
+/* ============================================================
+   TOG — Tenses Off and Grounded | McMaster Mindfulness Club
+   Digital Sanctuary Stylesheet
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+    --green-dark:    #2c5f2e;   /* deep forest green */
+    --green-mid:     #4a7c59;   /* mid forest green */
+    --green-light:   #ddecd6;   /* soft green tint */
+    --maroon:        #7a003c;   /* McMaster maroon */
+    --maroon-muted:  #9b5470;   /* softened maroon for accents */
+    --bg:            #f7f5f0;   /* warm off-white background */
+    --bg-card:       #ffffff;
+    --text:          #2a2a2a;
+    --text-muted:    #6b7a6e;
+    --border:        rgba(44, 95, 46, 0.15);
+    --radius:        14px;
+    --radius-sm:     8px;
+    --shadow:        0 4px 24px rgba(44, 95, 46, 0.10);
+    --nav-height:    60px;
 }
 
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
 html, body {
     width: 100%;
-    height: 100%;
-}
-
-#nav {
-    background-color: #ffddab;
-    padding: 2px;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.button {
-    flex: 1; 
-    background-color: #9fb6c3;
-    text-decoration: none;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-left: 5px;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-right: 5px;
-    width: 23%;
+    min-height: 100%;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    line-height: 1.6;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--green-dark);
+}
+
+a {
+    color: var(--green-mid);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--maroon);
+}
+
+/* ── Navigation ────────────────────────────────────────────── */
+#nav {
+    background-color: var(--green-dark);
+    display: flex;
+    align-items: stretch;
+    height: var(--nav-height);
+    gap: 3px;
+    padding: 6px 8px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+.button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.88);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.button:hover,
+.button.active {
+    background-color: var(--maroon);
+    border-color: var(--maroon);
+    color: #ffffff;
+}
+
+/* ── Hero / Title Banner ───────────────────────────────────── */
+#title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../images/goose2.jpg);
+    background-size: cover;
+    background-position: center;
+    min-height: 260px;
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+}
+
+/* Soft dark overlay so text is legible on any image */
+#title::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(44, 95, 46, 0.45),
+        rgba(44, 95, 46, 0.65)
+    );
+}
+
+#title h1,
+#title h2 {
+    position: relative;
+    color: #f5f0e8;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#title h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 6px;
+}
+
+#title h2 {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    font-weight: 300;
+    font-family: 'Lato', sans-serif;
+    opacity: 0.9;
+}
+
+/* ── Page Header Bar (project / showcase / about pages) ────── */
 .header {
-    background-color: #f4f4f4;
-    padding: 10px 0;
+    background-color: var(--green-light);
+    border-bottom: 2px solid var(--border);
+    padding: 18px 24px;
     text-align: center;
-    border-bottom: 2px solid #ccc;
 }
 
-#lab22 {
-    font-size: 20px;
-    text-align: center;
+.header h1 {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--green-dark);
+}
 
+/* ── Section Titles ────────────────────────────────────────── */
+#project-title {
+    text-align: center;
+    padding: 28px 16px 8px;
+}
+
+#project-title h2 {
+    font-size: 1.4rem;
+    color: var(--maroon-muted);
+}
+
+/* ── Project Graphic Container ─────────────────────────────── */
+.project-graphic-container {
+    margin: 20px auto 32px;
+    max-width: 820px;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-card);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.project-graphic-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-sm);
+}
+
+/* ── Team / About Page ─────────────────────────────────────── */
+.Members {
+    margin: 28px 24px 8px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--green-light);
+}
+
+.Members h2 {
+    font-size: 1.3rem;
+    color: var(--green-dark);
+}
+
+.People {
+    padding: 12px 24px 32px;
+}
+
+.People h3 {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--maroon-muted);
+    margin-top: 16px;
+    margin-bottom: 2px;
+    font-family: 'Lato', sans-serif;
+}
+
+.People h4 {
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    color: var(--text);
+}
+
+/* ── Showcase / Lab22 Section ──────────────────────────────── */
+#lab22 {
+    max-width: 760px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+#lab22 h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--green-dark);
 }
 
 #lab22 a {
     display: block;
-    margin: 15px 0;
-    font-weight: bold;
+    margin: 20px 0 6px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    color: var(--maroon);
+}
+
+#lab22 a:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
 }
 
 #lab22 ul {
-    list-style-position: inside;
-    padding-left: 0;
-    margin: 10px auto;
-    text-align: left;   
-    display: inline-block;
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 20px;
+    margin: 0 0 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
 }
 
-.Members {
-    margin-top: 20px;
-    font-size: 120%;
+#lab22 ul li {
+    margin-bottom: 4px;
 }
 
-#title {
-    display: block;
-    background-image: url(images/goose2.jpg);
-    background-size: cover;
-    background-position: center;
-    height: 200px;
-    text-align: center;
-    color: beige;
-    font-size: larger;
-    padding: 100px;
-}
+/* ── Responsive — Mobile First ─────────────────────────────── */
+@media (max-width: 480px) {
+    .button {
+        font-size: 0.7rem;
+        letter-spacing: 0;
+        padding: 4px 4px;
+    }
 
-#project-title {
-    text-align: center;
-}
+    #title {
+        min-height: 200px;
+        padding: 32px 16px;
+    }
 
-.project-graphic-container {
-    margin: 20px auto;
-    max-width: 800px;
-    padding: 10px;
-    border: 2px solid black;
-    background-color: #f9f9f9;
+    .project-graphic-container {
+        margin: 16px 12px;
+        border-radius: var(--radius-sm);
+    }
+
+    .Members,
+    .People {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
