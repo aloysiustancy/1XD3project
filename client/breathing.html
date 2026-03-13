@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Breathing Exercise</title>
+<link rel="stylesheet" href="style.css">
+<style>
+    canvas{
+        background:#020617;
+        border-radius:50%;
+    }
+
+    button{
+        padding:10px 20px;
+        font-size:16px;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+    }
+
+    #startBtn{
+        background:#22c55e;
+    }  
+
+    #stopBtn{
+        background:#ef4444;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<h1>Breathing Exercise</h1>
+
+<div class="container">
+
+<canvas id="breathingCanvas" width="250" height="250"></canvas>
+
+<h2 id="instruction">Press Start</h2>
+
+<button id="startBtn">Start</button>
+<button id="stopBtn">Stop</button>
+
+<script src="js/breathing.js"></script>
+</body>
+</html>
