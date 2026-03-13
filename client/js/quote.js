@@ -1,9 +1,42 @@
-async function fetchQuote(){
-    const response = await fetch("https://api.quotable.io/random");
-    const data = await response.json();
-    console.log(data);
-    const quote=data[0].q; // get the quote text
-    const author=data[0].a; // get the author name
-    document.getElementById("quote").textContent = `"${quote}"`;
-    document.getElementById("author").textContent = `- ${author}`;
+async function addQuote() {
+    const text = document.getElementById('quoteText').value;
+    const author = document.getElementById('quoteAuthor').value;
+
+    const res = await fetch('add_quote.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, author })
+    });
+    const data = await res.json();
+    document.getElementById('message').textContent = data.message;
+    loadQuotes();
 }
+
+async function importQuotes() {
+    const count = document.getElementById('importCount').value;
+
+    const res = await fetch('import_quotes.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count })
+    });
+    const data = await res.json();
+    document.getElementById('message').textContent = data.message;
+    loadQuotes();
+}
+
+async function loadQuotes() {
+    const res = await fetch('get_quotes.php');
+    const quotes = await res.json();
+
+    const tbody = document.getElementById('quoteList');
+    tbody.innerHTML = quotes.map(q => `
+    <tr>
+      <td>${q.text}</td>
+      <td>${q.author}</td>
+      <td>${q.source === 'api' ? '🌐 API' : '👤 Admin'}</td>
+    </tr>
+  `).join('');
+}
+
+loadQuotes();
