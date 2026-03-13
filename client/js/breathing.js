@@ -1,63 +1,85 @@
-const progress = document.getElementById("progress");
-const instruction = document.getElementById("instruction");
+const canvas = document.getElementById("breathingCanvas");
+const ctx = canvas.getContext("2d");
 
+const instruction = document.getElementById("instruction");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 
-const circumference = 2 * Math.PI * 90;
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 90;
 
-let timer = null;
+let animationId = null;
+let phaseStart = 0;
 
 const phases = [
-    { name:"Inhale", duration:4000 },
-    { name:"Hold", duration:7000 },
-    { name:"Exhale", duration:8000 }
+    {name:"Inhale", duration:4000},
+    {name:"Hold", duration:8000},
+    {name:"Exhale", duration:7000}
 ];
 
 let phaseIndex = 0;
 
-function animateRing(duration){
+function drawRing(progress){
 
-    progress.style.transition = "none";
-    progress.style.strokeDashoffset = circumference;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    setTimeout(() => {
+    // background ring
+    ctx.beginPath();
+    ctx.arc(centerX,centerY,radius,0,Math.PI*2);
+    ctx.strokeStyle="#334155";
+    ctx.lineWidth=15;
+    ctx.stroke();
 
-        progress.style.transition = `stroke-dashoffset ${duration}ms linear`;
-        progress.style.strokeDashoffset = 0;
-
-    }, 20);
+    // progress ring
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        radius,
+        -Math.PI/2,
+        -Math.PI/2 + progress * Math.PI*2
+    );
+    ctx.strokeStyle="#38bdf8";
+    ctx.lineWidth=15;
+    ctx.lineCap="round";
+    ctx.stroke();
 }
 
-function nextPhase(){
+function animate(timestamp){
 
     const phase = phases[phaseIndex];
 
-    instruction.textContent = phase.name;
+    if(!phaseStart) phaseStart = timestamp;
 
-    animateRing(phase.duration);
+    const elapsed = timestamp - phaseStart;
+    const progress = Math.min(elapsed / phase.duration,1);
 
-    timer = setTimeout(() => {
+    drawRing(progress);
 
+    if(progress >= 1){
         phaseIndex = (phaseIndex + 1) % phases.length;
-        nextPhase();
+        phaseStart = timestamp;
+        instruction.textContent = phases[phaseIndex].name;
+    }
 
-    }, phase.duration);
+    animationId = requestAnimationFrame(animate);
 }
 
 startBtn.onclick = () => {
 
-    if(!timer){
-        nextPhase();
+    if(!animationId){
+        phaseStart = 0;
+        instruction.textContent = phases[phaseIndex].name;
+        animationId = requestAnimationFrame(animate);
     }
 
-}
+};
 
 stopBtn.onclick = () => {
 
-    clearTimeout(timer);
-    timer = null;
-
+    cancelAnimationFrame(animationId);
+    animationId = null;
     instruction.textContent = "Paused";
 
-}
+};
