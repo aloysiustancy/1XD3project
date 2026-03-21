@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Report — Project Tenses Off and Grounded</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #111111;
+      --muted: #555555;
+      --accent: #000000;
+      --border: #dddddd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 48px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 2.2rem; }
+    h2 {
+      margin-top: 48px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { margin-top: 24px; color: #000; }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 32px 20px 80px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+    .muted { color: var(--muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f5f5f5; }
+    ul { padding-left: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #0b1220;
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Client Report</h1>
+    <p class="muted">Project “Tenses Off and Grounded”</p>
+    <p>Client: McMaster Mindfulness Club</p>
+    <p>Project Lead: That One Goose — Aloysius, Brian, Haoxuan, Jason</p>
+  </header>
+
+  <main class="container">
+
+    <section>
+      <h2>Purpose</h2>
+      <div class="card">
+        <p>
+          Project Tenses Off and Grounded aims to modernize the McMaster Mindfulness Club’s digital presence
+          by transitioning their static informational site into an interactive space that encourages student
+          engagement through low-friction “small gestures.”
+        </p>
+        <p>
+          The club’s primary need is to support the McMaster community during digital fatigue while promoting
+          mental well-being and combating mindfulness misinformation. The existing static website limits user
+          interaction and community building.
+        </p>
+        <p>TOG addresses this with four core features:</p>
+        <ul>
+          <li>Authentication system</li>
+          <li>Guided breathing exercise module</li>
+          <li>Moderator-led daily engagement space (“The Daily Vibe”)</li>
+          <li>Modernized information hub</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Data Description</h2>
+
+      <div class="card">
+        <h3>Accounts — Authentication</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>userID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>isAdmin</td><td>BOOLEAN</td><td></td><td>FALSE (default)</td></tr>
+          <tr><td>password</td><td>VARCHAR(255)</td><td></td><td>Hashed</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Users — Authentication</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>userID</td><td>INT</td><td>PK, FK</td><td>References accounts.userID</td></tr>
+          <tr><td>firstName</td><td>VARCHAR(255)</td><td></td><td>NOT NULL</td></tr>
+          <tr><td>lastName</td><td>VARCHAR(255)</td><td></td><td>NOT NULL</td></tr>
+          <tr><td>phoneNumber</td><td>VARCHAR(20)</td><td></td><td></td></tr>
+          <tr><td>email</td><td>VARCHAR(255)</td><td></td><td></td></tr>
+          <tr><td>username</td><td>VARCHAR(50)</td><td></td><td></td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Mood Entries — Emoji Calendar</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>entryID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>userID</td><td>INT</td><td>Foreign Key</td><td>References users.userID</td></tr>
+          <tr><td>entryDate</td><td>DATE</td><td></td><td>One entry per user per day</td></tr>
+          <tr><td>emoji</td><td>VARCHAR(10)</td><td></td><td>Emoji character or code</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Quotes — Wall of Wisdom</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>quoteID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>quoteText</td><td>TEXT</td><td></td><td></td></tr>
+          <tr><td>author</td><td>VARCHAR(100)</td><td></td><td>Optional</td></tr>
+          <tr><td>activeDate</td><td>DATE</td><td></td><td>Date displayed</td></tr>
+          <tr><td>createdBy</td><td>INT</td><td>Foreign Key</td><td>users.userID (moderator)</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Community Questions — Q&amp;A</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>questionID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>questionText</td><td>TEXT</td><td></td><td></td></tr>
+          <tr><td>postedBy</td><td>INT</td><td>Foreign Key</td><td>users.userID (moderator)</td></tr>
+          <tr><td>postedAt</td><td>TIMESTAMP</td><td></td><td></td></tr>
+          <tr><td>isActive</td><td>BOOLEAN</td><td></td><td>TRUE (default)</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Community Answers — Q&amp;A</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>answerID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>questionID</td><td>INT</td><td>Foreign Key</td><td>communityQuestions.questionID</td></tr>
+          <tr><td>userID</td><td>INT</td><td>Foreign Key</td><td>users.userID</td></tr>
+          <tr><td>answerText</td><td>TEXT</td><td></td><td></td></tr>
+          <tr><td>submittedAt</td><td>TIMESTAMP</td><td></td><td></td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Events — Central Hub</h3>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Key</th><th>Notes</th></tr>
+          <tr><td>eventID</td><td>INT</td><td>Primary Key</td><td>Auto Increment</td></tr>
+          <tr><td>title</td><td>VARCHAR(150)</td><td></td><td></td></tr>
+          <tr><td>eventDate</td><td>DATE</td><td></td><td></td></tr>
+          <tr><td>eventTime</td><td>TIME</td><td></td><td></td></tr>
+          <tr><td>description</td><td>TEXT</td><td></td><td></td></tr>
+          <tr><td>location</td><td>VARCHAR(200)</td><td></td><td></td></tr>
+        </table>
+      </div>
+    </section>
+
+<section>
+      <h2>Functions Performed By the App</h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>Function</th>
+            <th>Description</th>
+            <th>Who</th>
+            <th>DB Effect</th>
+            <th>Implementation</th>
+          </tr>
+          <tr>
+            <td>Register an account</td>
+            <td>Differentiates normal users and admins</td>
+            <td>Any visitor</td>
+            <td>INSERT users</td>
+            <td>PHP form → server-side validation → bcrypt hash → INSERT</td>
+          </tr>
+          <tr>
+            <td>Log in / Logout</td>
+            <td>Users are able to access modules that require user information</td>
+            <td>Registered user</td>
+            <td>SELECT users</td>
+            <td>PHP session management; password_verify()</td>
+          </tr>
+          <tr>
+            <td>Run breathing exercise</td>
+            <td>Calming exercise that aligns with the club’s ideology</td>
+            <td>Any user</td>
+            <td>None</td>
+            <td>Client-side CSS animation + JS timer + HTML audio element</td>
+          </tr>
+          <tr>
+            <td>View Quote of the Day</td>
+            <td>Allows all users to view a motivational and inspirational quote</td>
+            <td>Any user</td>
+            <td>SELECT quotes</td>
+            <td>Generates a random number within the range of quoteId and SELECT the specific id</td>
+          </tr>
+          <tr>
+            <td>Set Quote of the Day</td>
+            <td>Admins can introduce new quotes that might be trending</td>
+            <td>Moderator</td>
+            <td>INSERT quotes</td>
+            <td>Moderator form; PHP checks role before INSERT</td>
+          </tr>
+          <tr>
+            <td>Submit daily emoji mood</td>
+            <td>Users are encouraged to log on daily to update their calendar and interact with the web app</td>
+            <td>Logged-in user</td>
+            <td>INSERT/UPDATE mood_entries</td>
+            <td>JS sends AJAX POST; PHP upserts row for (user_id, today)</td>
+          </tr>
+          <tr>
+            <td>View emoji calendar</td>
+            <td>Users are able to reflect on past days</td>
+            <td>Logged-in user</td>
+            <td>SELECT mood_entries</td>
+            <td>PHP returns user entries; JS renders calendar grid</td>
+          </tr>
+          <tr>
+            <td>Post a community question</td>
+            <td>Creates a topic of interest that may provoke social interaction</td>
+            <td>Moderator</td>
+            <td>INSERT community_questions</td>
+            <td>Moderator form; PHP role-check before INSERT</td>
+          </tr>
+          <tr>
+            <td>Answer a community question</td>
+            <td>Creates social interaction between members</td>
+            <td>Logged-in user</td>
+            <td>INSERT community_answers</td>
+            <td>JS form submit to PHP INSERT</td>
+          </tr>
+          <tr>
+            <td>View community answers</td>
+            <td>Users are able to view other’s opinions on the topic at hand</td>
+            <td>Any user</td>
+            <td>SELECT answers + questions</td>
+            <td>PHP JOIN query; results rendered in page</td>
+          </tr>
+          <tr>
+            <td>View Next Meeting /Events</td>
+            <td>Allows users to RSVP to the events and admins to estimate the number of people interested</td>
+            <td>Any user</td>
+            <td>SELECT events</td>
+            <td>PHP fetches upcoming event; displayed as spotlight card</td>
+          </tr>
+          <tr>
+            <td>Update event info</td>
+            <td>Allows the admin to add images from the event</td>
+            <td>Moderator</td>
+            <td>INSERT/UPDATE events</td>
+            <td>Moderator admin panel; PHP role-check</td>
+          </tr>
+          <tr>
+            <td>View Mindfulness Myths</td>
+            <td>Disproves myths</td>
+            <td>Any user</td>
+            <td>None</td>
+            <td>Static HTML section in Central Hub page</td>
+          </tr>
+          <tr>
+            <td>Access curated resources</td>
+            <td>Informs the users</td>
+            <td>Any user</td>
+            <td>None</td>
+            <td>Static HTML - external links organised by time commitment</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Roles of Team Members</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Aloysius</h3>
+          <p>Authentication system — registration, login/logout, sessions, role-based access.</p>
+        </div>
+        <div class="card">
+          <h3>Haoxuan</h3>
+          <p>Breathing module — animated breathing guide, audio, timer logic (client-side).</p>
+        </div>
+        <div class="card">
+          <h3>Jason</h3>
+          <p>Daily Vibe — Wall of Wisdom, Emoji Calendar, Community Q&amp;A (full stack).</p>
+        </div>
+        <div class="card">
+          <h3>Brian</h3>
+          <p>Central Hub — Event Spotlight, Mindfulness Myths, curated resources, UI consistency.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Wireframes</h2>
+      <div class="card">
+        
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;">
+          <img src="images/homepage.jpeg" alt="Homepage Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/comminity.jpeg" alt="Community Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/events.jpeg" alt="Events Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/create_event.jpeg" alt="Create Event Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/resource.jpeg" alt="Resource Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/signup.jpeg" alt="Signup Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/login.jpeg" alt="Login Wireframe" style="width:100%; border:1px solid var(--border);">
+          <img src="images/admin_panel.jpeg" alt="Admin Panel Wireframe" style="width:100%; border:1px solid var(--border);">
+        </div>
+
+        <!-- <img src="images/wireframe1.png" alt="Wireframe 1" style="width:100%; border:1px solid var(--border);"> -->
+      </div>
+    </section>
+
+    <section>
+      <h2>Project Increments</h2>
+      <div class="card">
+        <h3>Increment 1 — Core Shell &amp; Authentication · April 3</h3>
+        <ul>
+          <li>Authentication system functional</li>
+          <li>Breathing module operational</li>
+          <li>Static Central Hub content live</li>
+          <li>Quote of the Day system working</li>
+        </ul>
+
+        <h3>Increment 2 — Full Interactivity · April 10</h3>
+        <ul>
+          <li>Authentication refinements</li>
+          <li>Emoji Calendar submission and display</li>
+          <li>Community Q&amp;A system</li>
+          <li>Event Spotlight management</li>
+        </ul>
+
+        <h3>Increment 3 — Polish &amp; Final Delivery · April 17</h3>
+        <ul>
+          <li>Cross-browser testing</li>
+          <li>Accessibility review</li>
+          <li>Responsive design fixes</li>
+          <li>UI consistency pass</li>
+          <li>Stretch features (if time permits)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Client Feedback</h2>
+      <div class="card">
+        <p>
+          The McMaster Mindfulness Club executive team responded positively to the concept,
+          especially the focus on low-effort engagement and avoiding social media-style complexity.
+        </p>
+        <p>
+          <strong>Emoji Calendar Feedback:</strong> Suggested making mood visibility accessible to public users
+          so students can feel less alone.
+        </p>
+        <p>
+          <strong>Breathing Module Feedback:</strong> Should be immediately accessible without login barriers,
+          especially for digitally fatigued users.
+        </p>
+        <p>
+          The team agreed to prioritize frictionless access and distraction-free user flow.
+        </p>
+      </div>
+    </section>
+
+    
+
+    <footer>
+      Client Report — Project Tenses Off and Grounded
+    </footer>
+  </main>
+</body>
+</html>
