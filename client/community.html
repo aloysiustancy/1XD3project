@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/calendar.css">
     <style>
         /* ── Page hero green box ── */
         .page-hero {
@@ -142,23 +143,27 @@
 
                 <!-- Gesture Calendar -->
                 <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3>Gesture Calendar</h3>
-                    <p>A calendar board of stickers representing the mood of the community over time — a gentle snapshot of how everyone is feeling.</p>
-                    <div class="feature-placeholder">
-                        <!-- TODO: PHP — fetch mood stickers from DB and render calendar -->
-                        <div class="calendar-placeholder">
-                            <div class="cal-grid">
-                                <div class="cal-cell">1</div><div class="cal-cell">2</div>
-                                <div class="cal-cell">3</div><div class="cal-cell">4</div>
-                                <div class="cal-cell">5</div><div class="cal-cell">6</div>
-                                <div class="cal-cell">7</div><div class="cal-cell">8</div>
-                                <div class="cal-cell">9</div><div class="cal-cell">10</div>
-                                <div class="cal-cell">11</div><div class="cal-cell">12</div>
-                                <div class="cal-cell">13</div><div class="cal-cell">14</div>
+                    <div class="wrapper">
+                        <header>
+                            <p class="current-date">
+
+                            <div class="icons">
+                                <span id="prev" class="material-symbols-rounded">&lt</span>
+                                <span id="next" class="material-symbols-rounded">&gt</span>
                             </div>
+                        </header>
+                        <div class="calendar">
+                            <ul class="weeks">
+                                <li>Sun</li>
+                                <li>Mon</li>
+                                <li>Tue</li>
+                                <li>Wed</li>
+                                <li>Thu</li>
+                                <li>Fri</li>
+                                <li>Sat</li>
+                            </ul>
+                            <ul class="days"></ul>
                         </div>
-                        <p class="placeholder-label">PHP integration pending</p>
                     </div>
                 </div>
 
@@ -198,5 +203,6 @@
         <p>©2025 McMaster Mindfulness Club · Built by That One Goose</p>
     </footer>
 
+    <script src="js/calendar.js"></script>
 </body>
 </html>
