@@ -110,16 +110,15 @@
             <div class="feature-grid">
 
                 <!-- Wall of Wisdom -->
-                <div class="feature-card">
+                <div class="feature-card" id="wow-card">
                     <div class="feature-icon">📜</div>
                     <h3>Wall of Wisdom</h3>
-                    <p>A moderator-curated Quote of the Day or Weekly Theme to give the community a sense of direction and grounding.</p>
-                    <div class="feature-placeholder">
-                        <!-- TODO: PHP — fetch current quote from DB -->
-                        <blockquote class="quote-placeholder">
-                            "Quote of the Day will appear here."
+                    <p>A moderator-curated Quote of the Day to give the community a sense of direction and grounding.</p>
+                    <div class="feature-placeholder" id="wow-content">
+                        <blockquote class="quote-placeholder" id="wow-text" style="font-style:italic;">
+                            Loading quote…
                         </blockquote>
-                        <p class="placeholder-label">— Placeholder · PHP integration pending</p>
+                        <p class="placeholder-label" id="wow-author"></p>
                     </div>
                 </div>
 
@@ -204,5 +203,6 @@
     </footer>
 
     <script src="js/calendar.js"></script>
+    <script src="js/quote.js"></script>
 </body>
 </html>
