@@ -16,9 +16,9 @@ if (empty($text)) {
     exit;
 }
 
+$source = 'admin';
 $stmt = $conn->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
 $stmt->bind_param('sss', $text, $author, $source);
-$source = 'admin';
 $stmt->execute();
 
 echo json_encode(['message' => 'Quote added successfully!']);

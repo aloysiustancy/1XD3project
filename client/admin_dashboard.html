@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | McMaster Mindfulness Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+    <nav id="nav">
+        <a href="index.html" id="nav-logo">McMaster Mindfulness Club</a>
+        <div id="nav-links">
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="community.html">Community</a>
+            <a class="nav-link" href="events.html">Events</a>
+            <a class="nav-link" href="members.html">Members</a>
+            <a class="nav-link" href="resources.html">Resources</a>
+        </div>
+        <div id="nav-social">
+            <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/mcmastermindfulnessclub/" target="_blank" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ══ DASHBOARD ════════════════════════════════════════════ -->
+    <div class="dashboard-wrap">
+        <div class="dashboard-panel">
+
+            <h1 class="dashboard-welcome">Welcome Username</h1> <!-- Need to replace Username to display the login username -->
+
+            <div class="dashboard-grid">
+
+                <!-- ── LEFT COLUMN ── -->
+                <div>
+
+                    <!-- Schedule an Event -->
+                    <div class="dash-section">
+                        <div class="dash-row">
+                            <span class="dash-label">Schedule an Event</span>
+                            <button class="icon-btn" title="Schedule event (coming soon)" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Publish Q&A -->
+                    <div class="dash-section">
+                        <p class="dash-label">Publish Q&amp;A Questions</p>
+                        <p class="dash-placeholder">Coming soon. </p>
+                    </div>
+
+                    <!-- Add Admin -->
+                    <div class="dash-section">
+                        <p class="dash-label">Create a new admin</p>
+                        <input class="dash-input" type="text" placeholder="Username or email…" disabled style="opacity:0.6; cursor:not-allowed;">
+                        <p class="dash-placeholder" style="margin-top:8px;">Coming soon.</p>
+                    </div>
+
+                </div>
+
+                <!-- ── RIGHT COLUMN ── -->
+                <div>
+
+                    <!-- Quote of the Day -->
+                    <div class="dash-section">
+                        <p class="dash-label">Quote of the day</p>
+
+                        <!-- Add a quote -->
+                        <textarea class="dash-input" id="q-text" rows="2" placeholder="Enter quote text…" style="margin-bottom:8px;"></textarea>
+                        <input  class="dash-input" id="q-author" type="text" placeholder="Author (optional)" style="margin-bottom:12px;">
+                        <button class="pill-btn" id="btn-add-quote" onclick="addQuote()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Quote
+                        </button>
+
+                        <hr class="dash-divider">
+
+                        <!-- Import quotes -->
+                        <div class="import-row" style="margin-bottom:16px;">
+                            <div>
+                                <label for="import-count">Import from external</label>
+                                <input class="count-input" id="import-count" type="number" min="1" max="50" value="10">
+                            </div>
+                            <button class="pill-btn-outline" id="btn-import" onclick="importQuotes()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
+                                Import
+                            </button>
+                        </div>
+
+                        <hr class="dash-divider">
+
+                        <!-- Quote list -->
+                        <div class="quote-list-hdr">
+                            <span id="quote-count">Loading…</span>
+                            <button class="pill-btn-outline" style="padding:5px 14px; font-size:0.75rem;" onclick="loadQuotes()">Refresh</button>
+                        </div>
+                        <div id="quote-list">
+                            <div class="quote-list-empty">Loading quotes…</div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ── END RIGHT COLUMN ── -->
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TOAST ════════════════════════════════════════════════ -->
+    <div id="toast"></div>
+
+    <!-- ══ FOOTER ════════════════════════════════════════════════ -->
+    <footer id="footer">
+        <div id="footer-social">
+            <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/mcmastermindfulnessclub/" target="_blank" aria-label="Instagram" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+        </div>
+        <p>©2025 McMaster Mindfulness Club · Built by That One Goose</p>
+    </footer>
+
+    <script src="js/quote.js"></script>
+
+</body>
+</html>

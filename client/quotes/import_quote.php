@@ -1,33 +1,68 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-require 'db.php';
-
-$data  = json_decode(file_get_contents('php://input'), true);
-$count = isset($data['count']) ? (int)$data['count'] : 5;
-
-// Fetch from external API
-$url      = "https://api.quotable.io/quotes/random?limit=$count";
-$response = file_get_contents($url);
-$quotes   = json_decode($response, true);
-
-if (!$quotes) {
-    echo json_encode(['error' => 'Failed to fetch from API']);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
     exit;
 }
 
-$stmt   = $conn->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
-$source = 'api';
-$stmt->bind_param('sss', $text, $author, $source);
+try {
+    require 'db.php';
 
-foreach ($quotes as $q) {
-    $text   = $q['content'];
-    $author = $q['author'];
-    $stmt->execute();
+    $data  = json_decode(file_get_contents('php://input'), true);
+    $count = isset($data['count']) ? min((int)$data['count'], 50) : 5;
+
+    // Fetch from external API
+    $url = "https://dummyjson.com/quotes?limit=$count";
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $response = curl_exec($ch);
+        $curlErr  = curl_error($ch);
+        curl_close($ch);
+        if ($response === false) {
+            throw new Exception('cURL error: ' . $curlErr);
+        }
+    } else {
+        $ctx = stream_context_create(['http' => ['timeout' => 10], 'ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
+        $response = @file_get_contents($url, false, $ctx);
+        if ($response === false) {
+            throw new Exception('file_get_contents failed for ' . $url);
+        }
+    }
+
+    $body   = json_decode($response, true);
+    $quotes = isset($body['quotes']) ? $body['quotes'] : null;
+
+    if (!$quotes || !is_array($quotes)) {
+        throw new Exception('Unexpected response from quotes API');
+    }
+
+    $stmt = $conn->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
+    if (!$stmt) {
+        throw new Exception('Prepare failed: ' . $conn->error);
+    }
+    $source = 'api';
+    $stmt->bind_param('sss', $text, $author, $source);
+
+    $imported = 0;
+    foreach ($quotes as $q) {
+        $text   = $q['quote'];
+        $author = $q['author'];
+        if ($stmt->execute()) {
+            $imported++;
+        }
+    }
+
+    echo json_encode(['message' => $imported . ' quotes imported!']);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
 }
-
-echo json_encode(['message' => count($quotes) . ' quotes imported!']);
 ?>
