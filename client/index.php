@@ -1,6 +1,5 @@
 <?php include 'includes/header.php'; ?>
 
-<!-- Hero Section with Breathing Module -->
 <section id="hero">
     <div id="hero-overlay"></div>
     <div id="hero-content">
@@ -12,21 +11,19 @@
     </div>
 </section>
 
-<!-- Event Spotlight Section -->
 <section class="section" id="event-spotlight">
     <div class="centered-block">
         <h2>Next Meeting</h2>
         
         <div class="card event-card" id="next-event-container">
             <div class="event-title" id="event-title">Loading event...</div>
-            <div class="countdown" id="countdown" style="font-size:2rem; color:var(--maroon); font-weight:bold; margin:10px 0;">--:--:--</div>
+            <div class="countdown" id="countdown" style="font-size:2.5rem; color:var(--maroon); font-weight:bold; margin:15px 0; font-family:'Playfair Display', serif;">--:--:--</div>
             <div class="event-info" id="event-location"></div>
             <p id="event-description"></p>
         </div>
     </div>
 </section>
 
-<!-- Mindfulness Myths Section -->
 <section class="section section-tinted">
     <div class="centered-block">
         <h2>Mindfulness Myths</h2>
@@ -57,13 +54,12 @@
             </div>
             
             <div class="two-col-image">
-                <img src="images/hero.jpg" alt="Mindfulness practice" style="border-radius:var(--radius);">
+                <img src="images/hero.jpg" alt="Mindfulness practice">
             </div>
         </div>
     </div>
 </section>
 
-<!-- Quick Breathing Embed (Optional - embeds Haoxuan's module directly) -->
 <section class="section">
     <div class="centered-block" style="text-align:center;">
         <h2>Take a Moment</h2>

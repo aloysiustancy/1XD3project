@@ -1,20 +1,16 @@
 <?php
-$conn = new mysqli('127.0.0.1', 'root', '', '', 3307);
+// Shared database for team
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'tana42_db');  
+define('DB_USER', 'tana42_local');               
+define('DB_PASS', '+im}Zbr.');   
+define('DB_CHARSET', 'utf8mb4');
 
-if ($conn->connect_error) {
-    header('Content-Type: application/json');
-    http_response_code(500);
-    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+    $pdo = new PDO($dsn, DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . htmlspecialchars($e->getMessage()));
 }
-
-$conn->query('CREATE DATABASE IF NOT EXISTS quotes');
-$conn->select_db('quotes');
-
-$conn->query('CREATE TABLE IF NOT EXISTS quotes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    text TEXT NOT NULL,
-    author VARCHAR(255) DEFAULT "Unknown",
-    source VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)');
 ?>

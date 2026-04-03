@@ -35,7 +35,5 @@ $current_page = basename($_SERVER['PHP_SELF'], ".php");
             <?php endif; ?>
         </div>
 
-        <div id="nav-social">
-            <!-- Mobile menu button will go here if needed, or leave empty for now -->
-        </div>
+        <div id="nav-social"></div>
     </nav>

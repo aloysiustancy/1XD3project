@@ -1,5 +1,4 @@
-// Simple mobile menu toggle if needed later
 document.addEventListener('DOMContentLoaded', function() {
-    // Your existing nav is responsive via CSS, but add toggle logic here if needed
-    console.log('Mobile menu loaded');
+    // Mobile menu functionality - CSS handles responsive, JS for enhancements if needed
+    console.log('MMC mobile menu ready');
 });

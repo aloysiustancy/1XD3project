@@ -43,12 +43,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const secs = Math.floor((diff % (1000 * 60)) / 1000);
             
-            countdownEl.textContent = days > 0 
-                ? `${days}d ${hours}h ${mins}m` 
-                : `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            // This logic now ensures seconds are always included
+            // Format: "2d 05h 12m 08s" or "05:12:08" if days are 0
+            if (days > 0) {
+                countdownEl.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+            } else {
+                countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
         }
         
         update();
-        setInterval(update, 1000);
+        setInterval(update, 1000); // 1000ms = 1 second
     }
 });

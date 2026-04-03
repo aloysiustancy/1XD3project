@@ -22,7 +22,7 @@ try {
     } else {
         echo json_encode(['success' => false, 'message' => 'No upcoming events']);
     }
-} catch(PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
+} catch(Exception $e) {
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
 ?>
