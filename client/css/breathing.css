@@ -1,0 +1,38 @@
+/* ── Breathing Widget ──────────────────────────────────────── */
+.breathing-wrapper {
+    max-width: 420px;
+    margin: 32px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#breathingCanvas {
+    display: block;
+    border-radius: 50%;
+    /* soft shadow tinted maroon to match the progress ring */
+    filter: drop-shadow(0 4px 20px rgba(122, 0, 60, 0.12));
+}
+
+#instruction {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    letter-spacing: 0.04em;
+    min-height: 2rem;
+    text-align: center;
+}
+
+.breathing-controls {
+    display: flex;
+    gap: 12px;
+}
+
+/* reuse site .btn but swap disabled state */
+.breathing-controls .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}

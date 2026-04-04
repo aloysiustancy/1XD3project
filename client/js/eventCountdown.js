@@ -1,58 +1,77 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('next-event-container');
-    const titleEl = document.getElementById('event-title');
-    const locEl = document.getElementById('event-location');
-    const descEl = document.getElementById('event-description');
-    const countdownEl = document.getElementById('countdown');
-    
-    if (!container) return;
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('eventCountdown.js loaded');
+
+    const titleEl      = document.getElementById('event-title');
+    const timeEl       = document.getElementById('event-time');
+    const locEl        = document.getElementById('event-location');
+    const descEl       = document.getElementById('event-description');
+    const countdownRow = document.getElementById('countdown-row');
+    const cdDays       = document.getElementById('cd-days');
+    const cdHours      = document.getElementById('cd-hours');
+    const cdMins       = document.getElementById('cd-mins');
+    const cdSecs       = document.getElementById('cd-secs');
+
+    console.log('Elements found:', {titleEl, timeEl, locEl, descEl, countdownRow, cdDays, cdHours, cdMins, cdSecs});
+
+    if (!countdownRow) return; // only bail if the countdown itself is missing
 
     fetch('api/getEvents.php')
-        .then(res => res.json())
+        .then(res => {
+            console.log('Fetch response status:', res.status);
+            return res.json();
+        })
         .then(data => {
+            console.log('API data:', data);
             if (data.success) {
                 renderEvent(data.event, data.target);
             } else {
-                titleEl.textContent = "No upcoming events";
-                countdownEl.style.display = 'none';
+                console.log('No upcoming events');
+                if (titleEl) titleEl.textContent = 'No upcoming events';
+                countdownRow.style.display = 'none';
             }
         })
-        .catch(() => {
-            titleEl.textContent = "Unable to load events";
-            countdownEl.style.display = 'none';
+        .catch(err => {
+            console.log('Fetch error:', err);
+            if (titleEl) titleEl.textContent = 'Unable to load events';
+            countdownRow.style.display = 'none';
         });
 
     function renderEvent(event, targetDate) {
-        const target = new Date(targetDate);
-        
-        titleEl.textContent = event.title;
-        locEl.innerHTML = `<strong>Date:</strong> ${event.eventDate} | <strong>Location:</strong> ${event.location}`;
-        if (descEl) descEl.textContent = event.description || '';
+        console.log('Rendering event:', event, 'targetDate:', targetDate);
+        // Replace space with T so Safari and all browsers parse it correctly
+        const target = new Date(targetDate.replace(' ', 'T'));
+        console.log('Parsed target date:', target);
+
+        if (titleEl) titleEl.textContent = event.title       || '';
+        if (timeEl)  timeEl.textContent  = event.eventTime   || '';
+        if (locEl)   locEl.textContent   = event.location    || '';
+        if (descEl)  descEl.textContent  = event.description || '';
+
+        // Update the left-panel date block
+        const dateObj = new Date((event.eventDate + 'T00:00:00'));
+        const monthEl = document.querySelector('#spotlight-date .month');
+        const dayEl   = document.querySelector('#spotlight-date .day');
+        const yearEl  = document.querySelector('#spotlight-date .year');
+        if (monthEl) monthEl.textContent = dateObj.toLocaleString('default', { month: 'long' });
+        if (dayEl)   dayEl.textContent   = dateObj.getDate();
+        if (yearEl)  yearEl.textContent  = dateObj.getFullYear();
 
         function update() {
             const now = new Date();
             const diff = target - now;
-            
+            console.log('Update called, now:', now, 'target:', target, 'diff:', diff);
             if (diff <= 0) {
-                countdownEl.textContent = "Event starting now!";
+                cdDays.textContent = cdHours.textContent = cdMins.textContent = cdSecs.textContent = '0';
                 return;
             }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            // This logic now ensures seconds are always included
-            // Format: "2d 05h 12m 08s" or "05:12:08" if days are 0
-            if (days > 0) {
-                countdownEl.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
-            } else {
-                countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }
+            cdDays.textContent  = Math.floor(diff / 86400000);
+            cdHours.textContent = Math.floor((diff % 86400000) / 3600000);
+            cdMins.textContent  = Math.floor((diff % 3600000)  / 60000);
+            cdSecs.textContent  = Math.floor((diff % 60000)    / 1000);
+            console.log('Countdown updated:', cdDays.textContent, cdHours.textContent, cdMins.textContent, cdSecs.textContent);
         }
-        
+
         update();
-        setInterval(update, 1000); // 1000ms = 1 second
+        setInterval(update, 1000);
     }
 });
