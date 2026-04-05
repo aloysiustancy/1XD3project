@@ -1,4 +1,4 @@
-    <footer id="footer">
+<footer id="footer">
         <div id="footer-social">
             <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook" class="social-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -15,6 +15,9 @@
         </div>
         <p>©2025 McMaster Mindfulness Club · Built by That One Goose</p>
     </footer>
+
+    <!-- mobileMenu loaded last so DOM is guaranteed ready -->
     <script src="js/mobileMenu.js"></script>
+
 </body>
 </html>

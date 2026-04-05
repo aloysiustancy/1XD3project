@@ -10,11 +10,13 @@
         justify-content: center;
         background-color: #2c5f2e;
     }
+
     .page-hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(160deg, rgba(44,95,46,0.45) 0%, rgba(122,0,60,0.30) 100%);
+        background: linear-gradient(160deg, rgba(44, 95, 46, 0.45) 0%, rgba(122, 0, 60, 0.30) 100%);
     }
+
     .page-hero-content {
         position: relative;
         text-align: center;
@@ -26,17 +28,24 @@
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
     }
+
     .page-hero-content h1 {
         font-family: 'Playfair Display', serif;
         font-size: clamp(2.16rem, 3vw, 3.6rem);
         color: #fff;
-        text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
         margin-bottom: 12px;
     }
+
     .page-hero-content p {
-        color: rgba(255,255,255,0.85);
+        color: rgba(255, 255, 255, 0.85);
         font-size: 1.2rem;
         margin: 0;
+    }
+    @media (max-width: 430px) {
+        .page-hero-content h1 {
+            font-size: 1.3rem;
+        }
     }
 </style>
 

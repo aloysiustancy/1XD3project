@@ -38,6 +38,33 @@
         font-size: 1.2rem;
         margin: 0;
     }
+
+    /* ── Small screens ── */
+    @media (max-width: 530px) {
+        .page-hero {
+            padding: 24px 16px;
+        }
+        .page-hero-content {
+            padding: 24px 20px;
+        }
+        .page-hero-content h1 {
+            font-size: 1.8rem;
+        }
+        .page-hero-content p {
+            font-size: 1rem;
+        }
+        .feature-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .emoji-row {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .wrapper {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    }
 </style>
 
 <!-- ══ PAGE HERO ════════════════════════════════════════════ -->
