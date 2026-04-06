@@ -49,7 +49,7 @@
                     <div class="dash-section">
                         <div class="dash-row">
                             <span class="dash-label">Schedule an Event</span>
-                            <button class="icon-btn" title="Schedule event (coming soon)" disabled>
+                            <button class="icon-btn" title="Schedule an event" onclick="openEventModal()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                             </button>
                         </div>
@@ -119,6 +119,44 @@
         </div>
     </div>
 
+    <!-- ══ CREATE EVENT MODAL ════════════════════════════════════ -->
+    <div id="event-modal-overlay" class="modal-overlay" onclick="closeEventModal(event)">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-header-badge" id="modal-title">Create Event</div>
+            <form id="event-form" onsubmit="submitEvent(event)">
+                <div class="modal-field">
+                    <label class="modal-label" for="ev-name">Event name</label>
+                    <input class="modal-input" id="ev-name" type="text" placeholder="" required>
+                </div>
+                <div class="modal-row">
+                    <div class="modal-field">
+                        <label class="modal-label" for="ev-datetime">Time</label>
+                        <input class="modal-input" id="ev-datetime" type="datetime-local" required>
+                    </div>
+                    <div class="modal-field">
+                        <label class="modal-label" for="ev-location">Location</label>
+                        <input class="modal-input" id="ev-location" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label" for="ev-image">Image</label>
+                    <label class="upload-area" id="upload-area" for="ev-image">
+                        <input type="file" id="ev-image" name="image" accept="image/*" onchange="previewImage(this)">
+                        <div class="upload-placeholder" id="upload-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Click to upload an image</span>
+                        </div>
+                        <img id="upload-preview" class="upload-preview" src="" alt="Preview" style="display:none;">
+                    </label>
+                </div>
+                <div style="text-align:center; margin-top:8px;">
+                    <button class="pill-btn" id="btn-submit-event" type="submit">SUBMIT</button>
+                </div>
+            </form>
+            <button class="modal-close" onclick="closeEventModal()" aria-label="Close">&times;</button>
+        </div>
+    </div>
+
     <!-- ══ TOAST ════════════════════════════════════════════════ -->
     <div id="toast"></div>
 
@@ -136,6 +174,7 @@
     </footer>
 
     <script src="js/quote.js"></script>
+    <script src="js/event.js"></script>
 
 </body>
 </html>
