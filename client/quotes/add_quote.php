@@ -16,10 +16,13 @@ if (empty($text)) {
     exit;
 }
 
-$source = 'admin';
-$stmt = $conn->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
-$stmt->bind_param('sss', $text, $author, $source);
-$stmt->execute();
-
-echo json_encode(['message' => 'Quote added successfully!']);
+try {
+    $source = 'admin';
+    $stmt = $pdo->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
+    $stmt->execute([$text, $author, $source]);
+    echo json_encode(['message' => 'Quote added successfully!']);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
 ?>

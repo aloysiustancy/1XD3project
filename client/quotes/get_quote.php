@@ -4,15 +4,12 @@ header('Access-Control-Allow-Origin: *');
 
 require 'db.php';
 
-$result = $conn->query('SELECT * FROM quotes ORDER BY created_at DESC');
-
-if (!$result) {
+try {
+    $stmt = $pdo->query('SELECT * FROM quotes ORDER BY created_at DESC');
+    $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($quotes);
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Query failed: ' . $conn->error]);
-    exit;
+    echo json_encode(['error' => $e->getMessage()]);
 }
-
-$quotes = $result->fetch_all(MYSQLI_ASSOC);
-
-echo json_encode($quotes);
 ?>

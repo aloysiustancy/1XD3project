@@ -43,20 +43,12 @@ try {
         throw new Exception('Unexpected response from quotes API');
     }
 
-    $stmt = $conn->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
-    if (!$stmt) {
-        throw new Exception('Prepare failed: ' . $conn->error);
-    }
-    $source = 'api';
-    $stmt->bind_param('sss', $text, $author, $source);
+    $stmt = $pdo->prepare('INSERT INTO quotes (text, author, source) VALUES (?, ?, ?)');
 
     $imported = 0;
     foreach ($quotes as $q) {
-        $text   = $q['quote'];
-        $author = $q['author'];
-        if ($stmt->execute()) {
-            $imported++;
-        }
+        $stmt->execute([$q['quote'], $q['author'], 'api']);
+        $imported++;
     }
 
     echo json_encode(['message' => $imported . ' quotes imported!']);
