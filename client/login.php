@@ -1,11 +1,12 @@
 <?php
-
 session_start();
 
 if (isset($_SESSION['userId'])) {
     header('Location: adminDashboard.php');
     exit;
 }
+
+include 'includes/header.php';
 
 $error = '';
 
@@ -35,10 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($passwordInput, $user['password'])) {
         $_SESSION['userId']  = $user['userId'];
         $_SESSION['isAdmin'] = $user['isAdmin'];
-        header('Location: adminDashboard.php');
+
+        if ($user['isAdmin']) { 
+            header('Location: adminDashboard.php');
+        } else {
+            header('Location: index.php');
+        }
         exit;
-    } else {
-        $error = "Invalid email or password.";
     }
 
     $conn->close();
