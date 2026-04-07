@@ -39,6 +39,50 @@
         margin: 0;
     }
 
+    .admin-btn {
+        margin-top: 10px;
+        padding: 8px 14px;
+        background: #2c5f2e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .admin-note {
+        font-size: 0.8rem;
+        color: gray;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        text-align: center;
+    }
+
+    #close-modal {
+        float: right;
+        cursor: pointer;
+    }
+
     /* ── Small screens ── */
     @media (max-width: 530px) {
         .page-hero {
@@ -65,6 +109,77 @@
             max-width: 100% !important;
         }
     }
+
+    .admin-btn {
+        margin-top: 10px;
+        padding: 10px 18px;
+        background: #2c5f2e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+
+    /* hover effect 🔥 */
+    .admin-btn:hover {
+        background: #3d7a40;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    /* Click effect */
+    .admin-btn:active {
+        transform: scale(0.95);
+    }
+
+    #modal-message {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .error {
+        color: red;
+    }
+
+    /* Input box beautification 🔥 */
+    #quote-input,
+    #author-input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    /* Focusing effect */
+    #quote-input:focus,
+    #author-input:focus {
+        border-color: #2c5f2e;
+        box-shadow: 0 0 5px rgba(44,95,46,0.3);
+    }
+
+    #submit-quote {
+        margin-top: 10px;
+        padding: 8px 14px;
+        background: #2c5f2e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #submit-quote:hover {
+        background: #3d7a40;
+    }
 </style>
 
 <!-- ══ PAGE HERO ════════════════════════════════════════════ -->
@@ -75,6 +190,14 @@
         <p>Your daily moment of calm — the Daily Vibe, Wall of Wisdom, Gesture Poll &amp; Calendar.</p>
     </div>
 </header>
+
+<?php
+    session_start();
+    if (!isset($_SESSION['userId'])) {
+        header('Location: login.php');
+        exit;
+    }
+?>
 
 <!-- ══ PLACEHOLDER NOTICE ══════════════════════════════════ -->
 <section class="section">
@@ -87,25 +210,35 @@
     </div>
 </section>
 
-<!-- ══ FEATURE PREVIEWS (placeholders) ════════════════════ -->
+<!-- ══ Wall of Wisdom ════════════════════ -->
 <section class="section section-tinted">
+    <div class="centered-block">
+        <h2>Wall of Wisdom</h2>
+        <div class="feature-card" id="wow-card">
+            
+            <div class="feature-icon">📜</div>
+            <p>A daily quote to give the community a sense of calm and grounding.</p>
+
+            <blockquote id="wow-text" style="font-style:italic;">
+                Loading quote...
+            </blockquote>
+            <p id="wow-author"></p>
+
+            <?php if ($_SESSION['isAdmin']): ?>
+                <button id="add-quote-btn" class="admin-btn">+ Add Quote</button>
+                <p class="admin-note">Moderator only</p>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ FEATURE PREVIEWS (placeholders) ════════════════════ -->
+<section class="section">
     <div class="centered-block">
         <h2>What's Coming</h2>
 
         <div class="feature-grid">
-
-            <!-- Wall of Wisdom -->
-            <div class="feature-card" id="wow-card">
-                <div class="feature-icon">📜</div>
-                <h3>Wall of Wisdom</h3>
-                <p>A moderator-curated Quote of the Day to give the community a sense of direction and grounding.</p>
-                <div class="feature-placeholder" id="wow-content">
-                    <blockquote class="quote-placeholder" id="wow-text" style="font-style:italic;">
-                        Loading quote…
-                    </blockquote>
-                    <p class="placeholder-label" id="wow-author"></p>
-                </div>
-            </div>
 
             <!-- Gesture Poll -->
             <div class="feature-card">
@@ -171,10 +304,30 @@
 
         </div>
     </div>
+
+    <div id="quote-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal">&times;</span>
+            <h3>Add Quote</h3>
+            <?php if ($_SESSION['isAdmin']): ?>
+                <p class="admin-warning">You are an administrator</p>
+            <?php endif; ?>
+
+            <input id="quote-input" placeholder="Enter quote"><br>
+            <input id="author-input" placeholder="Author"><br>
+            <button id="submit-quote">Submit</button>
+
+            <p id="modal-message"></p>
+        </div>
+    </div>
 </section>
+
+<script>
+    const isAdmin = <?php echo $_SESSION['isAdmin'] ? 'true' : 'false'; ?>;
+</script>
 
 <link rel="stylesheet" href="css/calendar.css">
 <script src="js/calendar.js"></script>
-<script src="js/quote.js"></script>
+<script src="js/quote-display.js"></script>
 
 <?php include 'includes/footer.php'; ?>
