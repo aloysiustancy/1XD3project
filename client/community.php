@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['userID'])) {
+    header('Location: login.php');
+    exit;
+}
+?>
+
 <?php include 'includes/header.php'; ?>
 
 <style>
@@ -190,14 +199,6 @@
         <p>Your daily moment of calm — the Daily Vibe, Wall of Wisdom, Gesture Poll &amp; Calendar.</p>
     </div>
 </header>
-
-<?php
-    session_start();
-    if (!isset($_SESSION['userId'])) {
-        header('Location: login.php');
-        exit;
-    }
-?>
 
 <!-- ══ PLACEHOLDER NOTICE ══════════════════════════════════ -->
 <section class="section">
