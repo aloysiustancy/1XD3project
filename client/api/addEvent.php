@@ -10,10 +10,11 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
 header('Content-Type: application/json');
 require_once '../quotes/db.php';
 
-$title     = trim($_POST['title']     ?? '');
-$eventDate = trim($_POST['eventDate'] ?? '');
-$eventTime = trim($_POST['eventTime'] ?? '') ?: null;
-$location  = trim($_POST['location']  ?? '') ?: null;
+$title       = trim($_POST['title']       ?? '');
+$eventDate   = trim($_POST['eventDate']   ?? '');
+$eventTime   = trim($_POST['eventTime']   ?? '') ?: null;
+$location    = trim($_POST['location']    ?? '') ?: null;
+$description = trim($_POST['description'] ?? '') ?: null;
 
 if (!$title || !$eventDate) {
     echo json_encode(['error' => 'Event name and date/time are required.']);
@@ -48,10 +49,10 @@ if (!empty($_FILES['image']['tmp_name'])) {
 /* ── Insert into DB ── */
 try {
     $stmt = $pdo->prepare(
-        "INSERT INTO events (title, eventDate, eventTime, location, image)
-         VALUES (?, ?, ?, ?, ?)"
+        "INSERT INTO events (title, eventDate, eventTime, location, description, image)
+         VALUES (?, ?, ?, ?, ?, ?)"
     );
-    $stmt->execute([$title, $eventDate, $eventTime, $location, $imagePath]);
+    $stmt->execute([$title, $eventDate, $eventTime, $location, $description, $imagePath]);
     echo json_encode(['success' => true, 'message' => 'Event created!', 'image' => $imagePath]);
 } catch (Exception $e) {
     // Clean up uploaded file if DB insert fails

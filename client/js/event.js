@@ -51,10 +51,11 @@ async function submitEvent(e) {
     const [eventDate, eventTime] = datetimeVal ? datetimeVal.split('T') : ['', ''];
 
     const formData = new FormData();
-    formData.append('title',     document.getElementById('ev-name').value.trim());
-    formData.append('eventDate', eventDate);
-    formData.append('eventTime', eventTime || '');
-    formData.append('location',  document.getElementById('ev-location').value.trim());
+    formData.append('title',       document.getElementById('ev-name').value.trim());
+    formData.append('eventDate',   eventDate);
+    formData.append('eventTime',   eventTime || '');
+    formData.append('location',    document.getElementById('ev-location').value.trim());
+    formData.append('description', document.getElementById('ev-description').value.trim());
 
     const imageFile = document.getElementById('ev-image').files[0];
     if (imageFile) {

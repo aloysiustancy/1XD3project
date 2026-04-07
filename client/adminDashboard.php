@@ -48,6 +48,7 @@ try {
             <a class="nav-link" href="members.php">Members</a>
             <a class="nav-link" href="resources.php">Resources</a>
         </div>
+        <a href="logout.php" class="nav-logout">Log out</a>
         <div id="nav-social">
             <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -161,6 +162,10 @@ try {
                         <label class="modal-label" for="ev-location">Location</label>
                         <input class="modal-input" id="ev-location" type="text" placeholder="">
                     </div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label" for="ev-description">Description</label>
+                    <textarea class="modal-input modal-textarea" id="ev-description" rows="3" placeholder="Briefly describe the event…"></textarea>
                 </div>
                 <div class="modal-field">
                     <label class="modal-label" for="ev-image">Image</label>

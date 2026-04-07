@@ -1,6 +1,13 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Access denied.']);
+    exit;
+}
+
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
