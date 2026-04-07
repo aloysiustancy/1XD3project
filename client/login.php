@@ -3,7 +3,8 @@
 session_start();
 
 if (isset($_SESSION['userId'])) {
-    header('Location: adminDashboard.php');
+    $dest = (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == 1) ? 'adminDashboard.php' : 'community.php';
+    header('Location: ' . $dest);
     exit;
 }
 
@@ -35,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($passwordInput, $user['password'])) {
         $_SESSION['userId']  = $user['userId'];
         $_SESSION['isAdmin'] = $user['isAdmin'];
-        header('Location: adminDashboard.php');
+        $dest = ($user['isAdmin'] == 1) ? 'adminDashboard.php' : 'community.php';
+        header('Location: ' . $dest);
         exit;
     } else {
         $error = "Invalid email or password.";

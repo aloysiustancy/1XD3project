@@ -6,20 +6,19 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
     exit;
 }
 
-/* ── Fetch admin's first name for the welcome heading ── */
+/* ── Fetch admin's first name from clientproj (mysqli) ── */
 $adminName = 'Admin';
-try {
-    require_once 'quotes/db.php';
-    $stmt = $pdo->prepare(
-        "SELECT ui.firstName FROM UserInfo ui WHERE ui.userId = ? LIMIT 1"
-    );
-    $stmt->execute([$_SESSION['userId']]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row && $row['firstName']) {
-        $adminName = htmlspecialchars($row['firstName']);
+$conn = new mysqli('localhost', 'root', '', 'clientproj');
+if (!$conn->connect_error) {
+    $stmt = $conn->prepare('SELECT firstName FROM UserInfo WHERE userId = ? LIMIT 1');
+    $stmt->bind_param('i', $_SESSION['userId']);
+    $stmt->execute();
+    $stmt->bind_result($firstName);
+    if ($stmt->fetch() && $firstName) {
+        $adminName = htmlspecialchars($firstName);
     }
-} catch (Exception $e) {
-    // Non-fatal — welcome heading falls back to 'Admin'
+    $stmt->close();
+    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -88,9 +87,12 @@ try {
 
                     <!-- Add Admin -->
                     <div class="dash-section">
-                        <p class="dash-label">Create a new admin</p>
-                        <input class="dash-input" type="text" placeholder="Username or email…" disabled style="opacity:0.6; cursor:not-allowed;">
-                        <p class="dash-placeholder" style="margin-top:8px;">Coming soon.</p>
+                        <div class="dash-row">
+                            <span class="dash-label">Create a new admin</span>
+                            <button class="icon-btn" title="Create admin account" onclick="openAdminModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -186,6 +188,48 @@ try {
         </div>
     </div>
 
+    <!-- ══ CREATE ADMIN MODAL ════════════════════════════════════ -->
+    <div id="admin-modal-overlay" class="modal-overlay" onclick="closeAdminModal(event)">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title">
+            <div class="modal-header-badge" id="admin-modal-title">Create Admin</div>
+            <form id="admin-form" onsubmit="submitAdmin(event)">
+                <div class="modal-row">
+                    <div class="modal-field">
+                        <label class="modal-label" for="adm-first">First Name</label>
+                        <input class="modal-input" id="adm-first" type="text" required>
+                    </div>
+                    <div class="modal-field">
+                        <label class="modal-label" for="adm-last">Last Name</label>
+                        <input class="modal-input" id="adm-last" type="text" required>
+                    </div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label" for="adm-email">Email</label>
+                    <input class="modal-input" id="adm-email" type="email" required>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label" for="adm-phone">Phone <span style="font-weight:400; color:var(--text-muted);">(optional)</span></label>
+                    <input class="modal-input" id="adm-phone" type="tel">
+                </div>
+                <div class="modal-row">
+                    <div class="modal-field">
+                        <label class="modal-label" for="adm-password">Password</label>
+                        <input class="modal-input" id="adm-password" type="password" required minlength="8">
+                    </div>
+                    <div class="modal-field">
+                        <label class="modal-label" for="adm-confirm">Confirm Password</label>
+                        <input class="modal-input" id="adm-confirm" type="password" required minlength="8">
+                    </div>
+                </div>
+                <p id="adm-pw-error" style="color:#a0323c; font-size:0.82rem; margin:-8px 0 12px; display:none;">Passwords do not match.</p>
+                <div style="text-align:center; margin-top:8px;">
+                    <button class="pill-btn" id="btn-submit-admin" type="submit">SUBMIT</button>
+                </div>
+            </form>
+            <button class="modal-close" onclick="closeAdminModal()" aria-label="Close">&times;</button>
+        </div>
+    </div>
+
     <!-- ══ TOAST ════════════════════════════════════════════════ -->
     <div id="toast"></div>
 
@@ -204,6 +248,7 @@ try {
 
     <script src="js/quote.js"></script>
     <script src="js/event.js"></script>
+    <script src="js/admin.js"></script>
 
 </body>
 </html>
