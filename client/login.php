@@ -3,7 +3,7 @@
 session_start();
 
 if (isset($_SESSION['userId'])) {
-    header('Location: /dashboard.php');
+    header('Location: adminDashboard.php');
     exit;
 }
 
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($passwordInput, $user['password'])) {
         $_SESSION['userId']  = $user['userId'];
         $_SESSION['isAdmin'] = $user['isAdmin'];
-        header('Location: /dashboard.php');
+        header('Location: adminDashboard.php');
         exit;
     } else {
         $error = "Invalid email or password.";
