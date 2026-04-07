@@ -5,7 +5,7 @@ require 'db.php';
 
 
 $isAdmin = $_SESSION['isAdmin'];
-$userID = $_SESSION['userID'];
+$userID = $_SESSION['userId'];
 
 if (!$isAdmin) {
     echo json_encode(['error' => 'Not authorized']);
