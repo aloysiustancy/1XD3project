@@ -82,12 +82,15 @@ async function loadQuotes() {
         }
 
         list.innerHTML = data.map(q => `
-                    <div class="quote-item">
+                    <div class="quote-item" id="quote-${q.id}">
                         <div class="q-text">"${esc(q.text)}"</div>
                         <div class="q-meta">
                             <span>— ${esc(q.author || 'Unknown')}</span>
                             <span class="q-source-badge">${esc(q.source || 'admin')}</span>
                             ${q.created_at ? '<span>' + esc(q.created_at.slice(0, 10)) + '</span>' : ''}
+                            <button class="q-delete-btn" onclick="deleteQuote(${q.id}, this)" title="Delete quote">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                            </button>
                         </div>
                     </div>
                 `).join('');
@@ -104,6 +107,32 @@ function esc(str) {
 }
 
 loadQuotes();
+
+/* ── Delete quote ── */
+async function deleteQuote(id, btn) {
+    btn.disabled = true;
+    try {
+        const res = await fetch('quotes/delete_quote.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        const item = document.getElementById('quote-' + id);
+        if (item) item.remove();
+        const remaining = document.querySelectorAll('#quote-list .quote-item').length;
+        const countEl = document.getElementById('quote-count');
+        if (countEl) countEl.textContent = remaining + ' quote' + (remaining !== 1 ? 's' : '');
+        if (remaining === 0) {
+            document.getElementById('quote-list').innerHTML = '<div class="quote-list-empty">No quotes yet.</div>';
+        }
+        showToast('Quote deleted.');
+    } catch (err) {
+        showToast(err.message || 'Failed to delete quote.', true);
+        btn.disabled = false;
+    }
+}
 
 async function loadRandomQuote() {
     const textEl = document.getElementById('wow-text');
