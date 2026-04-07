@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Access denied.']);
+    exit;
+}
+
 header('Content-Type: application/json');
 require_once '../quotes/db.php';
 
