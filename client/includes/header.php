@@ -3,7 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$isLoggedIn = isset($_SESSION['userID']);
+$isLoggedIn = isset($_SESSION['userId']);
 $isAdmin    = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true;
 $current_page = basename($_SERVER['PHP_SELF'], ".php");
 ?>
@@ -25,20 +25,27 @@ $current_page = basename($_SERVER['PHP_SELF'], ".php");
 
     <a href="index.php" id="nav-logo">McMaster Mindfulness Club</a>
 
-    <!-- Hamburger — visible only on mobile via CSS -->
     <button id="nav-burger" aria-label="Toggle navigation" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    <!-- Nav links — hidden on mobile until burger is clicked -->
     <div id="nav-links">
         <a href="index.php"     class="nav-link <?php echo $current_page === 'index'     ? 'active' : ''; ?>">Home</a>
         <a href="community.php" class="nav-link <?php echo $current_page === 'community' ? 'active' : ''; ?>">Community</a>
         <a href="events.php"    class="nav-link <?php echo $current_page === 'events'    ? 'active' : ''; ?>">Events</a>
         <a href="members.php"   class="nav-link <?php echo $current_page === 'members'   ? 'active' : ''; ?>">Members</a>
         <a href="resources.php" class="nav-link <?php echo $current_page === 'resources' ? 'active' : ''; ?>">Resources</a>
+
+        <?php if ($isLoggedIn): ?>
+            <?php if ($isAdmin): ?>
+                <a href="adminDashboard.php" class="nav-link <?php echo $current_page === 'adminDashboard' ? 'active' : ''; ?>">Dashboard</a>
+            <?php endif; ?>
+            <a href="logout.php" class="nav-link nav-btn">Logout</a>
+        <?php else: ?>
+            <a href="login.php" class="nav-link nav-btn <?php echo $current_page === 'login' ? 'active' : ''; ?>">Login</a>
+        <?php endif; ?>
     </div>
 
     <div id="nav-social">

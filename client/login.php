@@ -10,7 +10,7 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $conn = new mysqli("localhost", "root", "", "clientproj");
+    $conn = new mysqli("localhost", "tana42_local", "+im}Zbr.", "tana42_db");
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -166,7 +166,7 @@ include 'includes/header.php'; // outputs <!DOCTYPE html>, <html>, <head>, <body
             <button type="submit">Log In</button>
 
             <p class="register-link">
-                Don't have an account? <a href="addUser.php">Register here</a>
+                Don't have an account? <a href="register.php">Register here</a>
             </p>
         </form>
     </div>

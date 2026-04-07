@@ -7,9 +7,9 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
 }
 
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "clientproj";
+$username = "tana42_local";
+$password = "+im}Zbr";
+$dbname = "tana42_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

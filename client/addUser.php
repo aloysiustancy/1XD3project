@@ -1,9 +1,11 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "mydatabase";
+$username = "tana42_local";
+$password = "+im}Zbr.";
+$dbname = "tana42_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -11,36 +13,42 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$firstName = $_POST['firstName'];
-$lastName = $_POST['lastName'];
-$phoneNumber = $_POST['phoneNumber'];
-$email = $_POST['email'];
-$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$firstName = trim($_POST['firstName'] ?? '');
+$lastName = trim($_POST['lastName'] ?? '');
+$phoneNumber = trim($_POST['phoneNumber'] ?? '');
+$email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
+$passwordRaw = $_POST['password'] ?? '';
 
-/* Insert into Users table */
-
-$sql1 = "INSERT INTO Users (isAdmin, password)
-         VALUES (0, '$password')";
-
-if ($conn->query($sql1) === TRUE) {
-
-    $userId = $conn->insert_id;
-
-    /* Insert into UserInfo table */
-
-    $sql2 = "INSERT INTO UserInfo (userId, firstName, lastName, phoneNumber, email)
-             VALUES ('$userId', '$firstName', '$lastName', '$phoneNumber', '$email')";
-
-    if ($conn->query($sql2) === TRUE) {
-        echo "User created successfully!";
-    } else {
-        echo "Error inserting user info: " . $conn->error;
-    }
-
-} else {
-    echo "Error inserting user: " . $conn->error;
+if (!$email || empty($passwordRaw)) {
+    die("Invalid input");
 }
 
-$conn->close();
+$hashedPassword = password_hash($passwordRaw, PASSWORD_DEFAULT);
+$stmt1 = $conn->prepare("INSERT INTO Users (isAdmin, password) VALUES (?, ?)");
+$stmt1->bind_param("is", $isAdmin, $hashedPassword);
 
+$isAdmin = 0;
+
+if ($stmt1->execute()) {
+
+    $userId = $stmt1->insert_id;
+
+    /* Insert into UserInfo table safely */
+    $stmt2 = $conn->prepare("INSERT INTO UserInfo (userId, firstName, lastName, phoneNumber, email) VALUES (?, ?, ?, ?, ?)");
+    $stmt2->bind_param("issss", $userId, $firstName, $lastName, $phoneNumber, $email);
+
+    if ($stmt2->execute()) {
+        echo "User created successfully!";
+    } else {
+        echo "Error inserting user info: " . $stmt2->error;
+    }
+
+    $stmt2->close();
+
+} else {
+    echo "Error inserting user: " . $stmt1->error;
+}
+
+$stmt1->close();
+$conn->close();
 ?>
