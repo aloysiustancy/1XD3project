@@ -8,15 +8,6 @@ if (empty($_SESSION['userId']) || $_SESSION['isAdmin'] !== 1) {
     die("Access denied.");
 }
 
-/* ── CSRF check ─────────────────────────────────────────────── */
-if (
-    empty($_POST['csrf_token']) ||
-    !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])
-) {
-    http_response_code(403);
-    die("Invalid request.");
-}
-
 /* ── Input validation ───────────────────────────────────────── */
 $errors = [];
 
@@ -137,8 +128,5 @@ if (!$stmt2->execute()) {
 
 $stmt2->close();
 $conn->close();
-
-/* ── Rotate CSRF token after successful use ─────────────────── */
-$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
 echo "Admin created successfully.";
