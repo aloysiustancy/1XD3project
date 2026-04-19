@@ -1,4 +1,43 @@
 <?php include 'includes/header.php'; ?>
+<style>
+    .page-hero {
+        position: relative;
+        width: 100%;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2c5f2e;
+    }
+    .page-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, rgba(44,95,46,0.45) 0%, rgba(122,0,60,0.30) 100%);
+    }
+    .page-hero-content {
+        position: relative;
+        text-align: center;
+        padding: 36px 48px;
+        max-width: 640px;
+        background-color: rgba(44, 95, 46, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    .page-hero-content h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.16rem, 6vw, 3.6rem);
+        color: #fff;
+        text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+        margin-bottom: 12px;
+    }
+    .page-hero-content p {
+        color: rgba(255,255,255,0.85);
+        font-size: 1.2rem;
+        margin: 0;
+    }
+</style>
 
 <!-- ══ PAGE HERO ═══════════════════════════════════════════════ -->
 <header class="page-hero">

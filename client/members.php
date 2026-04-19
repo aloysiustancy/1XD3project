@@ -83,7 +83,7 @@
                 </div>
                 <h3>Ava Forbes-Schnick</h3>
                 <span class="member-role">Co-President</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -92,7 +92,7 @@
                 </div>
                 <h3>Aman Arora</h3>
                 <span class="member-role">Co-President</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -101,7 +101,7 @@
                 </div>
                 <h3>Kamalini Vundemodalu</h3>
                 <span class="member-role">VP Communications</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -110,7 +110,7 @@
                 </div>
                 <h3>Meltam Othman</h3>
                 <span class="member-role">VP Communications</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -119,7 +119,7 @@
                 </div>
                 <h3>Akshita Varghese</h3>
                 <span class="member-role">VP Education</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -128,7 +128,7 @@
                 </div>
                 <h3>Mary O'Brien</h3>
                 <span class="member-role">VP Partnership &amp; Outreach</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -137,7 +137,7 @@
                 </div>
                 <h3>Parmida Yazdi Nia</h3>
                 <span class="member-role">VP Events</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
             <div class="member-card">
@@ -146,7 +146,7 @@
                 </div>
                 <h3>Anjutha Thayalan</h3>
                 <span class="member-role">VP Events</span>
-                <p>[Blurb]</p>
+                <p>-</p>
             </div>
 
         </div>

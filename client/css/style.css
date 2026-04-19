@@ -106,8 +106,10 @@ a:hover { color: var(--maroon); }
 }
 
 .btn-outline-green {
-    display: inline-block;
-    padding: 8px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
     border-radius: 50px;
     font-family: 'Lato', sans-serif;
     font-size: 0.8rem;
@@ -115,14 +117,15 @@ a:hover { color: var(--maroon); }
     letter-spacing: 0.05em;
     text-transform: uppercase;
     border: 1.5px solid var(--green-mid);
-    color: var(--green-mid);
-    background: transparent;
+    color: #fff;
+    background-color: var(--green-mid);
     text-decoration: none;
-    transition: background-color 0.2s, color 0.2s, transform 0.15s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
 }
 
 .btn-outline-green:hover {
-    background-color: var(--green-mid);
+    background-color: var(--green-dark);
+    border-color: var(--green-dark);
     color: #fff;
     transform: translateY(-2px);
 }
@@ -854,7 +857,7 @@ a:hover { color: var(--maroon); }
    RESOURCE CARDS
    ════════════════════════════════════════════════════════════ */
 .resource-section-label {
-    font-size: 1.1rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--green-dark);
     margin-bottom: 20px;
