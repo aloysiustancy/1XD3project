@@ -1,12 +1,12 @@
 <?php
 // Shared database for team
 define('DB_HOST', 'localhost');
-//define('DB_NAME', 'tana42_db');  
-//define('DB_USER', 'tana42_local');               
-//define('DB_PASS', '+im}Zbr.');   
-define('DB_NAME', 'caij95_db');  
-define('DB_USER', 'root');               
-define('DB_PASS', '');   
+define('DB_NAME', 'tana42_db');  
+define('DB_USER', 'tana42_local');               
+define('DB_PASS', '+im}Zbr.');   
+//define('DB_NAME', 'caij95_db');  
+//define('DB_USER', 'root');               
+//define('DB_PASS', '');   
 define('DB_CHARSET', 'utf8mb4');
 
 try {

@@ -1,7 +1,7 @@
 <?php
 session_start();
-$_SESSION['userId'] = 1;
-$_SESSION['isAdmin'] = true;
+//$_SESSION['userId'] = 1;
+//$_SESSION['isAdmin'] = true;
 
 if (!isset($_SESSION['userId'])) {
     header('Location: login.php');
