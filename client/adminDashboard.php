@@ -9,7 +9,7 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
 /* ── Fetch admin's first name for the welcome heading ── */
 $adminName = 'Admin';
 try {
-    require_once 'quotes/db.php';
+    require_once __DIR__ . '/includes/connect.php';
     $stmt = $pdo->prepare(
         "SELECT ui.firstName FROM UserInfo ui WHERE ui.userId = ? LIMIT 1"
     );
@@ -40,13 +40,13 @@ try {
 
     <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
     <nav id="nav">
-        <a href="index.php" id="nav-logo">McMaster Mindfulness Club</a>
+        <a href="index.html" id="nav-logo">McMaster Mindfulness Club</a>
         <div id="nav-links">
-            <a class="nav-link" href="index.php">Home</a>
-            <a class="nav-link" href="community.php">Community</a>
-            <a class="nav-link" href="events.php">Events</a>
-            <a class="nav-link" href="members.php">Members</a>
-            <a class="nav-link" href="resources.php">Resources</a>
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="community.html">Community</a>
+            <a class="nav-link" href="events.html">Events</a>
+            <a class="nav-link" href="members.html">Members</a>
+            <a class="nav-link" href="resources.html">Resources</a>
         </div>
         <div id="nav-social">
             <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook">
@@ -71,25 +71,37 @@ try {
 
                     <!-- Schedule an Event -->
                     <div class="dash-section">
-                        <div class="dash-row">
-                            <span class="dash-label">Schedule an Event</span>
-                            <button class="icon-btn" title="Schedule an event" onclick="openEventModal()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Publish Q&A -->
-                    <div class="dash-section">
-                        <p class="dash-label">Publish Q&amp;A Questions</p>
-                        <p class="dash-placeholder">Coming soon. </p>
-                    </div>
-
-                    <!-- Add Admin -->
-                    <div class="dash-section">
-                        <p class="dash-label">Create a new admin</p>
-                        <input class="dash-input" type="text" placeholder="Username or email…" disabled style="opacity:0.6; cursor:not-allowed;">
-                        <p class="dash-placeholder" style="margin-top:8px;">Coming soon.</p>
+                        <p class="dash-label">Schedule an Event</p>
+                        <form id="event-form" onsubmit="submitEvent(event)">
+                            <div class="modal-field">
+                                <label class="modal-label" for="ev-name">Event name</label>
+                                <input class="modal-input" id="ev-name" type="text" required>
+                            </div>
+                            <div class="modal-row">
+                                <div class="modal-field">
+                                    <label class="modal-label" for="ev-datetime">Time</label>
+                                    <input class="modal-input" id="ev-datetime" type="datetime-local" required>
+                                </div>
+                                <div class="modal-field">
+                                    <label class="modal-label" for="ev-location">Location</label>
+                                    <input class="modal-input" id="ev-location" type="text">
+                                </div>
+                            </div>
+                            <div class="modal-field">
+                                <label class="modal-label" for="ev-image">Image</label>
+                                <label class="upload-area" id="upload-area" for="ev-image">
+                                    <input type="file" id="ev-image" name="image" accept="image/*" onchange="previewImage(this)">
+                                    <div class="upload-placeholder" id="upload-placeholder">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                        <span>Click to upload an image</span>
+                                    </div>
+                                    <img id="upload-preview" class="upload-preview" src="" alt="Preview" style="display:none;">
+                                </label>
+                            </div>
+                            <div style="text-align:center; margin-top:8px;">
+                                <button class="pill-btn" id="btn-submit-event" type="submit">SUBMIT</button>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
@@ -97,87 +109,42 @@ try {
                 <!-- ── RIGHT COLUMN ── -->
                 <div>
 
-                    <!-- Quote of the Day -->
+                    <!-- Add Admin -->
                     <div class="dash-section">
-                        <p class="dash-label">Quote of the day</p>
-
-                        <!-- Add a quote -->
-                        <textarea class="dash-input" id="q-text" rows="2" placeholder="Enter quote text…" style="margin-bottom:8px;"></textarea>
-                        <input  class="dash-input" id="q-author" type="text" placeholder="Author (optional)" style="margin-bottom:12px;">
-                        <button class="pill-btn" id="btn-add-quote" onclick="addQuote()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            Add Quote
-                        </button>
-
-                        <hr class="dash-divider">
-
-                        <!-- Import quotes -->
-                        <div class="import-row" style="margin-bottom:16px;">
-                            <div>
-                                <label for="import-count">Import from external</label>
-                                <input class="count-input" id="import-count" type="number" min="1" max="50" value="10">
+                        <p class="dash-label">Create a new admin</p>
+                        <form id="admin-form" onsubmit="submitAdmin(event)">
+                            <div class="modal-row">
+                                <div class="modal-field">
+                                    <label class="modal-label" for="adm-first">First name</label>
+                                    <input class="modal-input" id="adm-first" type="text" required>
+                                </div>
+                                <div class="modal-field">
+                                    <label class="modal-label" for="adm-last">Last name</label>
+                                    <input class="modal-input" id="adm-last" type="text" required>
+                                </div>
                             </div>
-                            <button class="pill-btn-outline" id="btn-import" onclick="importQuotes()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
-                                Import
-                            </button>
-                        </div>
-
-                        <hr class="dash-divider">
-
-                        <!-- Quote list -->
-                        <div class="quote-list-hdr">
-                            <span id="quote-count">Loading…</span>
-                            <button class="pill-btn-outline" style="padding:5px 14px; font-size:0.75rem;" onclick="loadQuotes()">Refresh</button>
-                        </div>
-                        <div id="quote-list">
-                            <div class="quote-list-empty">Loading quotes…</div>
-                        </div>
-
+                            <div class="modal-field">
+                                <label class="modal-label" for="adm-email">Email</label>
+                                <input class="modal-input" id="adm-email" type="email" required>
+                            </div>
+                            <div class="modal-field">
+                                <label class="modal-label" for="adm-phone">Phone number</label>
+                                <input class="modal-input" id="adm-phone" type="tel" required minlength="7" maxlength="20">
+                            </div>
+                            <div class="modal-field">
+                                <label class="modal-label" for="adm-password">Password</label>
+                                <input class="modal-input" id="adm-password" type="password" minlength="8" required>
+                            </div>
+                            <div style="text-align:center; margin-top:8px;">
+                                <button class="pill-btn" id="btn-submit-admin" type="submit">CREATE</button>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
                 <!-- ── END RIGHT COLUMN ── -->
 
             </div>
-        </div>
-    </div>
-
-    <!-- ══ CREATE EVENT MODAL ════════════════════════════════════ -->
-    <div id="event-modal-overlay" class="modal-overlay" onclick="closeEventModal(event)">
-        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-header-badge" id="modal-title">Create Event</div>
-            <form id="event-form" onsubmit="submitEvent(event)">
-                <div class="modal-field">
-                    <label class="modal-label" for="ev-name">Event name</label>
-                    <input class="modal-input" id="ev-name" type="text" placeholder="" required>
-                </div>
-                <div class="modal-row">
-                    <div class="modal-field">
-                        <label class="modal-label" for="ev-datetime">Time</label>
-                        <input class="modal-input" id="ev-datetime" type="datetime-local" required>
-                    </div>
-                    <div class="modal-field">
-                        <label class="modal-label" for="ev-location">Location</label>
-                        <input class="modal-input" id="ev-location" type="text" placeholder="">
-                    </div>
-                </div>
-                <div class="modal-field">
-                    <label class="modal-label" for="ev-image">Image</label>
-                    <label class="upload-area" id="upload-area" for="ev-image">
-                        <input type="file" id="ev-image" name="image" accept="image/*" onchange="previewImage(this)">
-                        <div class="upload-placeholder" id="upload-placeholder">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                            <span>Click to upload an image</span>
-                        </div>
-                        <img id="upload-preview" class="upload-preview" src="" alt="Preview" style="display:none;">
-                    </label>
-                </div>
-                <div style="text-align:center; margin-top:8px;">
-                    <button class="pill-btn" id="btn-submit-event" type="submit">SUBMIT</button>
-                </div>
-            </form>
-            <button class="modal-close" onclick="closeEventModal()" aria-label="Close">&times;</button>
         </div>
     </div>
 
@@ -199,6 +166,34 @@ try {
 
     <script src="js/quote.js"></script>
     <script src="js/event.js"></script>
+    <script>
+        async function submitAdmin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-admin');
+            btn.disabled = true;
+            btn.textContent = 'Creating…';
+
+            const body = new FormData();
+            body.append('firstName',   document.getElementById('adm-first').value.trim());
+            body.append('lastName',    document.getElementById('adm-last').value.trim());
+            body.append('email',       document.getElementById('adm-email').value.trim());
+            body.append('phoneNumber', document.getElementById('adm-phone').value.trim());
+            body.append('password',    document.getElementById('adm-password').value);
+
+            try {
+                const res  = await fetch('addAdmin.php', { method: 'POST', body });
+                const text = await res.text();
+                const ok   = res.ok;
+                showToast(text, !ok);
+                if (ok) document.getElementById('admin-form').reset();
+            } catch {
+                showToast('Request failed. Please try again.', true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'CREATE';
+            }
+        }
+    </script>
 
 </body>
 </html>

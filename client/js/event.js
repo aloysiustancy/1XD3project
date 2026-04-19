@@ -1,25 +1,3 @@
-/* ── Event Modal ── */
-
-function openEventModal() {
-    document.getElementById('event-modal-overlay').classList.add('open');
-    document.getElementById('ev-name').focus();
-}
-
-function closeEventModal(e) {
-    if (e && e.target !== document.getElementById('event-modal-overlay')) return;
-    document.getElementById('event-modal-overlay').classList.remove('open');
-    document.getElementById('event-form').reset();
-    resetImagePreview();
-}
-
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        document.getElementById('event-modal-overlay').classList.remove('open');
-        document.getElementById('event-form').reset();
-        resetImagePreview();
-    }
-});
-
 /* ── Image preview ── */
 function previewImage(input) {
     const preview = document.getElementById('upload-preview');
@@ -73,7 +51,6 @@ async function submitEvent(e) {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         showToast('Event created!');
-        document.getElementById('event-modal-overlay').classList.remove('open');
         document.getElementById('event-form').reset();
         resetImagePreview();
     } catch (err) {
