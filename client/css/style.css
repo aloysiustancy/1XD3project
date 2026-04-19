@@ -985,83 +985,6 @@ a:hover { color: var(--maroon); }
 }
 
 /* ════════════════════════════════════════════════════════════
-   CONTACT
-   ════════════════════════════════════════════════════════════ */
-.contact-email {
-    font-size: 1rem;
-    margin-bottom: 8px !important;
-    text-align: center;
-}
-
-#contact-social {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    margin-bottom: 36px;
-}
-
-.social-icon {
-    color: var(--text-muted);
-    transition: color 0.2s;
-}
-
-.social-icon:hover { color: var(--maroon); }
-
-#contact-form {
-    max-width: 640px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.form-row {
-    display: flex;
-    gap: 16px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 6px;
-}
-
-.form-group label {
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--green-dark);
-}
-
-.form-group input,
-.form-group textarea {
-    padding: 10px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'Lato', sans-serif;
-    font-size: 0.95rem;
-    background-color: var(--bg-card);
-    color: var(--text);
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-    resize: vertical;
-    width: 100%;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--green-mid);
-    box-shadow: 0 0 0 3px rgba(74,124,89,0.15);
-}
-
-#contact-form .btn {
-    align-self: center;
-    margin-top: 4px;
-}
-
-/* ════════════════════════════════════════════════════════════
    FEATURE GRID (Community page)
    ════════════════════════════════════════════════════════════ */
 .feature-grid {
@@ -1320,9 +1243,6 @@ a:hover { color: var(--maroon); }
         align-self: stretch;
         text-align: center;
     }
-
-    .form-row { flex-direction: column; }
-}
 
 /* ════════════════════════════════════════════════════════════
    RESPONSIVE — PHONE  (≤ 480px)
