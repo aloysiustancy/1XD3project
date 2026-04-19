@@ -156,6 +156,12 @@ document.getElementById("submit-question").onclick = async () => {
         loadQA();
 
     } else {
+        closeQuestionModal();
+
         showModal("Error", data.error || "Error");
     }
 };
+
+function closeQuestionModal() {
+    document.getElementById("question-modal").classList.add("hidden");
+}
