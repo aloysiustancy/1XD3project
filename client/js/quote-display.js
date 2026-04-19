@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 async function loadQuote() {
     const textEl = document.getElementById("wow-text");
     const authorEl = document.getElementById("wow-author");
@@ -22,7 +23,6 @@ loadQuote();
 // ===== MODAL LOGIC =====
 const btn = document.getElementById("add-quote-btn");
 const modal = document.getElementById("quote-modal");
-const closeBtn = document.getElementById("close-modal");
 const submitBtn = document.getElementById("submit-quote");
 const message = document.getElementById("modal-message");
 
@@ -30,7 +30,11 @@ btn.onclick = () => {
     modal.classList.remove("hidden");
 };
 
-closeBtn.onclick = () => modal.classList.add("hidden");
+document.querySelectorAll(".close-modal").forEach(btn => {
+    btn.onclick = () => {
+        btn.closest(".modal").classList.add("hidden");
+    };
+});
 
 submitBtn.onclick = async () => {
     const text = document.getElementById("quote-input").value;
@@ -66,3 +70,4 @@ submitBtn.onclick = async () => {
 function showMessage(msg) {
     message.innerText = msg;
 }
+});

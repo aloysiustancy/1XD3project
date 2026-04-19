@@ -25,7 +25,7 @@ if (!$text || !$author) {
 try {
     $stmt = $pdo->prepare("
         INSERT INTO quotes (quoteText, author, activeDate, createdBy)
-        VALUES (?, ?, CURDATE(), ?)
+        VALUES (?, ?, NULL, ?)
     ");
     $stmt->execute([$text, $author, $userID]);
 

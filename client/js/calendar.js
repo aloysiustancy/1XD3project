@@ -21,7 +21,16 @@ const renderCalendar = () => {
         // adding active class to li if the current day, month, and year matched
         let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
                      && currYear === new Date().getFullYear() ? "active" : "";
-        liTag += `<li class="${isToday}">${i}</li>`;
+        
+        // 🔥 加在这里（补0）
+        const month = String(currMonth + 1).padStart(2, '0');
+        const day = String(i).padStart(2, '0');
+
+        liTag += `
+        <li class="${isToday}" data-date="${currYear}-${month}-${day}">
+            <div class="day-num">${i}</div>
+            <div class="day-emoji" id="emoji-${currYear}-${month}-${day}"></div>
+        </li>`;
     }
     for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
         liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
@@ -29,7 +38,70 @@ const renderCalendar = () => {
     currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
     daysTag.innerHTML = liTag;
 }
-renderCalendar();
+
+async function loadMoods() {
+    const res = await fetch("Q&A/public_moods.php");
+    const data = await res.json();
+
+    for (let date in data) {
+        const cell = document.getElementById("emoji-" + date);
+        if (!cell) continue;
+
+        let html = "";
+        data[date].forEach(m => {
+            html += `<span>${m.emoji}</span>`;
+        });
+
+        cell.innerHTML = html;
+    }
+}
+
+function updateCalendar() {
+    renderCalendar();
+    loadMoods();
+}
+
+async function loadStats() {
+    const res = await fetch("Q&A/public_moods.php");
+    const data = await res.json();
+
+    let total = {};
+
+    for (let date in data) {
+        data[date].forEach(m => {
+            if (!total[m.emoji]) total[m.emoji] = 0;
+            total[m.emoji] += m.count;
+        });
+    }
+
+    const container = document.getElementById("mood-stats");
+
+    let html = `
+    <h4>Today's Mood Stats</h4>
+    <table class="stats-table">
+        <tr>
+            <th>Mood</th>
+            <th># of People</th>
+        </tr>
+    `;
+
+    for (let e in total) {
+        html += `
+        <tr>
+            <td class="mood-emoji">${e}</td>
+            <td>${total[e]}</td>
+        </tr>`;
+    }
+
+    html += "</table>";
+
+    container.innerHTML = html;
+}
+
+// 在 render 后调用
+updateCalendar();
+loadStats();
+
 prevNextIcon.forEach(icon => { // getting prev and next icons
     icon.addEventListener("click", () => { // adding click event on both icons
         // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
@@ -42,6 +114,6 @@ prevNextIcon.forEach(icon => { // getting prev and next icons
         } else {
             date = new Date(); // pass the current date as date value
         }
-        renderCalendar(); // calling renderCalendar function
+        updateCalendar(); // calling renderCalendar function
     });
 });
