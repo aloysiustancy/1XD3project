@@ -315,6 +315,29 @@ if (!isset($_SESSION['userId'])) {
             text-shadow: 0 0 15px rgba(44,95,46,0.5);
         }
     }
+
+    .qa-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .qa-table th {
+        background: #2c5f2e;
+        color: white;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .qa-table td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        font-size: 0.9rem;
+    }
+
+    .qa-table tr:hover {
+        background: #f5f5f5;
+    }
 </style>
 
 <!-- ══ PAGE HERO ════════════════════════════════════════════ -->
@@ -345,6 +368,9 @@ if (!isset($_SESSION['userId'])) {
 
                     <?php if ($_SESSION['isAdmin']): ?>
                         <button id="add-quote-btn" class="admin-btn">+ Add Quote</button>
+                        <a href="quotes/quote_management.php">
+                            <button class="admin-btn" style="margin-left:8px;">Quote Management</button>
+                        </a>
                         <p class="admin-note">Moderator only</p>
                     <?php endif; ?>
             </div>
@@ -409,6 +435,8 @@ if (!isset($_SESSION['userId'])) {
                             </div>
 
                             <p id="qa-user-answer" class="hidden"></p><br>
+
+                            <div id="qa-others"></div> 
 
                             <?php if ($_SESSION['isAdmin']): ?>
                                 <button onclick="showQuestionModal()" class="admin-btn">+ Add Question</button>

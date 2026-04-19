@@ -8,8 +8,7 @@ $userID = $_SESSION['userId'] ?? null;
 
 $stmt = $pdo->prepare("
     SELECT * FROM communityQuestions
-    WHERE DATE(postedAt) <= CURDATE()
-    ORDER BY RAND()
+    WHERE DATE(postedAt) = CURDATE()
     LIMIT 1
 ");
 $stmt->execute();
@@ -29,8 +28,20 @@ $stmt2 = $pdo->prepare("
 $stmt2->execute([$question['questionID'], $userID]);
 $userAnswer = $stmt2->fetch(PDO::FETCH_ASSOC);
 
+// 🔥 随机获取其他人的回答（最多10条）
+$stmt3 = $pdo->prepare("
+    SELECT userID, answerText
+    FROM communityAnswers
+    WHERE questionID = ?
+      AND (userID <> ? OR ? IS NULL)
+    ORDER BY RAND()
+    LIMIT 10
+");
+$stmt3->execute([$question['questionID'], $userID, $userID]);
+$others = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
 echo json_encode([
     "question" => $question,
-    "userAnswer" => $userAnswer
+    "userAnswer" => $userAnswer,
+    "others" => $others
 ]);
-?>

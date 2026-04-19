@@ -15,6 +15,19 @@ if (!$text) {
     exit;
 }
 
+$stmtCheck = $pdo->prepare("
+    SELECT COUNT(*) FROM communityQuestions
+    WHERE DATE(postedAt) = CURDATE()
+");
+$stmtCheck->execute();
+
+if ($stmtCheck->fetchColumn() > 0) {
+    echo json_encode([
+        'error' => 'You or another moderator have already set up a different question.'
+    ]);
+    exit;
+}
+
 $stmt = $pdo->prepare("
     INSERT INTO communityQuestions (questionText, postedBy, postedAt)
     VALUES (?, ?, NOW())

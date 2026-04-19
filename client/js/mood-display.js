@@ -42,6 +42,8 @@ function submitMood(emoji, btn) {
 
         // 高亮当前选中的 emoji
         highlightEmoji(emoji);
+        updateCalendar();
+        loadStats();
 
         moodLocked = true;
         todayEmoji = emoji;
@@ -65,6 +67,8 @@ function checkTodayMood() {
             todayEmoji = data.emoji;
 
             highlightEmoji(todayEmoji);
+
+            loadStats();
         })
         .catch(err => {
             console.error(err);

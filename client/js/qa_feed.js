@@ -13,20 +13,20 @@ function loadQA() {
             const questionEl = document.getElementById("qa-question");
             const answerBox = document.getElementById("qa-answer-box");
             const userAnswerEl = document.getElementById("qa-user-answer");
+            const othersContainer = document.getElementById("qa-others");
 
             answerBox.classList.add("hidden");
             userAnswerEl.classList.add("hidden");
+            othersContainer.innerHTML = "";
 
             if (!data.question) {
-                questionEl.textContent = "No question today.";
+                questionEl.textContent = "Moderators did not upload any questions today.";
                 return;
             }
 
             const q = data.question;
             questionEl.textContent = q.questionText;
             currentQuestionID = q.questionID;
-
-            console.log("questionID:", currentQuestionID); // 👈 加这里
 
             // 已回答
             if (data.userAnswer) {
@@ -37,8 +37,38 @@ function loadQA() {
 
             } else {
                 answered = false;
-
                 answerBox.classList.remove("hidden");
+            }
+
+            // 🔥 显示别人答案
+            if (data.others && data.others.length > 0) {
+                let html = `
+                    <table class="qa-table">
+                        <tr>
+                            <th>UserID</th>
+                            <th>Answer</th>
+                        </tr>
+                `;
+
+                data.others.forEach(a => {
+                    html += `
+                        <tr>
+                            <td>${a.userID}</td>
+                            <td>${a.answerText}</td>
+                        </tr>
+                    `;
+                });
+
+                html += "</table>";
+
+                othersContainer.innerHTML = html;
+            } else if(data.userAnswer) {
+
+                othersContainer.innerHTML = `
+                    <p style="color:red; font-size:20px; margin-top:10px;">
+                        No other responses yet. Be the first!
+                    </p>
+                `;
             }
         });
 }
@@ -113,12 +143,19 @@ document.getElementById("submit-question").onclick = async () => {
     const msg = document.getElementById("question-message");
 
     if (data.success) {
-        msg.innerText = "Question added!";
-        msg.style.color = "green";
 
+        showModal("Success", "Question added!");
+
+        // 关闭弹窗
+        document.getElementById("question-modal").classList.add("hidden");
+
+        // 清空输入框
         document.getElementById("question-input").value = "";
+
+        // 刷新页面数据
+        loadQA();
+
     } else {
-            msg.innerText = data.error || "Error";
-            msg.style.color = "red";
+        showModal("Error", data.error || "Error");
     }
 };

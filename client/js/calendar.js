@@ -49,7 +49,7 @@ async function loadMoods() {
 
         let html = "";
         data[date].forEach(m => {
-            html += `<span>${m.emoji}</span>`;
+            html += `<span class="mood-emoji">${m.emoji}</span>`;
         });
 
         cell.innerHTML = html;
@@ -62,19 +62,36 @@ function updateCalendar() {
 }
 
 async function loadStats() {
+
+    const container = document.getElementById("mood-stats");
+
+    // ✅ 1. 先问后端：我今天选了吗？
+    const checkRes = await fetch("Q&A/get_today_mood.php");
+    const userData = await checkRes.json();
+
+    // ❌ 没选 → 不显示
+    if (!userData.exists) {
+        container.innerHTML = `
+        <p style="color: red; text-align:center; font-size:20px">
+            Select your mood to see stats
+        </p>
+        `;
+        return;
+    }
+
+    // ✅ 2. 选了 → 才加载统计
     const res = await fetch("Q&A/public_moods.php");
     const data = await res.json();
 
+    const today = new Date().toISOString().split("T")[0];
+
     let total = {};
 
-    for (let date in data) {
-        data[date].forEach(m => {
-            if (!total[m.emoji]) total[m.emoji] = 0;
-            total[m.emoji] += m.count;
+    if (data[today]) {
+        data[today].forEach(m => {
+            total[m.emoji] = m.count;
         });
     }
-
-    const container = document.getElementById("mood-stats");
 
     let html = `
     <h4>Today's Mood Stats</h4>
