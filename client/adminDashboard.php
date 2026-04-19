@@ -40,13 +40,13 @@ try {
 
     <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
     <nav id="nav">
-        <a href="index.html" id="nav-logo">McMaster Mindfulness Club</a>
+        <a href="index.php" id="nav-logo">McMaster Mindfulness Club</a>
         <div id="nav-links">
-            <a class="nav-link" href="index.html">Home</a>
-            <a class="nav-link" href="community.html">Community</a>
-            <a class="nav-link" href="events.html">Events</a>
-            <a class="nav-link" href="members.html">Members</a>
-            <a class="nav-link" href="resources.html">Resources</a>
+            <a class="nav-link" href="index.php">Home</a>
+            <a class="nav-link" href="community.php">Community</a>
+            <a class="nav-link" href="events.php">Events</a>
+            <a class="nav-link" href="members.php">Members</a>
+            <a class="nav-link" href="resources.php">Resources</a>
         </div>
         <div id="nav-social">
             <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook">
