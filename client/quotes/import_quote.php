@@ -1,4 +1,9 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Imports quotes from the dummyjson.com API into the database. Max 50 per request.
+// Uses cURL if available, otherwise falls back to file_get_contents.
+ 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');

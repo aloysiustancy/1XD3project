@@ -1,4 +1,10 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Events page — displays upcoming meeting spotlight with live countdown and past event archive
+
+include 'includes/header.php';
+?>
 <style>
     .page-hero {
         position: relative;
@@ -210,7 +216,7 @@
                 </div>
             </div>
 
-        </div><!-- /.events-list -->
+        </div>
     </div>
 </section>
 

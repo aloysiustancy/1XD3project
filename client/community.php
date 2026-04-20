@@ -1,7 +1,9 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Community page — displays Wall of Wisdom, Gesture Poll, Calendar, and Moderator Q&A features
+
 session_start();
-//$_SESSION['userId'] = 1;
-//$_SESSION['isAdmin'] = true;
 
 if (!isset($_SESSION['userId'])) {
     header('Location: login.php');
@@ -94,7 +96,6 @@ if (!isset($_SESSION['userId'])) {
         cursor: pointer;
     }
 
-    /* ── Small screens ── */
     @media (max-width: 530px) {
         .page-hero {
             padding: 24px 16px;
@@ -132,14 +133,12 @@ if (!isset($_SESSION['userId'])) {
         transition: all 0.25s ease;
     }
 
-    /* hover effect 🔥 */
     .admin-btn:hover {
         background: #3d7a40;
         transform: translateY(-2px);
         box-shadow: 0 6px 14px rgba(0,0,0,0.2);
     }
 
-    /* Click effect */
     .admin-btn:active {
         transform: scale(0.95);
     }
@@ -157,7 +156,6 @@ if (!isset($_SESSION['userId'])) {
         color: red;
     }
 
-    /* Input box beautification 🔥 */
     .input {
         width: 90%;
         padding: 10px;
@@ -169,8 +167,7 @@ if (!isset($_SESSION['userId'])) {
         transition: all 0.2s ease;
     }
 
-    /* Focusing effect */
-    .input {
+    .input:focus {
         border-color: #2c5f2e;
         box-shadow: 0 0 5px rgba(44,95,46,0.3);
     }
@@ -200,16 +197,13 @@ if (!isset($_SESSION['userId'])) {
         pointer-events: none;
     }
 
-    /* Message modal */
     .modal {
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
-
         display: flex;
         justify-content: center;
         align-items: center;
-
         z-index: 999;
     }
 
@@ -219,7 +213,6 @@ if (!isset($_SESSION['userId'])) {
         border-radius: 16px;
         width: 320px;
         text-align: center;
-
         box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         animation: modalFade 0.25s ease;
     }
@@ -245,7 +238,6 @@ if (!isset($_SESSION['userId'])) {
         border: none;
         border-radius: 8px;
         cursor: pointer;
-
         transition: all 0.25s ease;
     }
 
@@ -293,20 +285,13 @@ if (!isset($_SESSION['userId'])) {
         font-size: 1.6rem;
         font-weight: 600;
         margin: 10px 0 14px;
-
-        /* Gradient text */
         background: linear-gradient(90deg, #ff7338, #ff5c25);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-
-        /* Glowing effect */
         text-shadow: 0 0 8px rgba(44,95,46,0.25);
-
-        /* Animation */
         animation: glowPulse 2.5s infinite alternate;
     }
 
-    /* 呼吸光效 */
     @keyframes glowPulse {
         from {
             text-shadow: 0 0 5px rgba(44,95,46,0.2);
@@ -340,7 +325,6 @@ if (!isset($_SESSION['userId'])) {
     }
 </style>
 
-<!-- ══ PAGE HERO ════════════════════════════════════════════ -->
 <header class="page-hero">
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
@@ -349,39 +333,29 @@ if (!isset($_SESSION['userId'])) {
     </div>
 </header>
 
-<!-- ══ FEATURE PREVIEWS (placeholders) ════════════════════ -->
 <section class="section section-tinted">
     <div class="centered-block">
-
         <div class="feature-grid">
-
-            <!-- Wall of Wisdom -->
 
             <div class="feature-card" id="wow-card">
                 <div class="feature-icon">📜</div>
                 <h3>Wall of Wisdom</h3>
-
-                    <blockquote id="wow-text" style="font-style:italic;">
-                        Loading quote...
-                    </blockquote>
-                    <p id="wow-author"></p>
-
-                    <?php if ($_SESSION['isAdmin']): ?>
-                        <button id="add-quote-btn" class="admin-btn">+ Add Quote</button>
-                        <a href="quotes/quote_management.php">
-                            <button class="admin-btn" style="margin-left:8px;">Quote Management</button>
-                        </a>
-                        <p class="admin-note">Moderator only</p>
-                    <?php endif; ?>
+                <blockquote id="wow-text" style="font-style:italic;">Loading quote...</blockquote>
+                <p id="wow-author"></p>
+                <?php if ($_SESSION['isAdmin']): ?>
+                    <button id="add-quote-btn" class="admin-btn">+ Add Quote</button>
+                    <a href="quotes/quote_management.php">
+                        <button class="admin-btn" style="margin-left:8px;">Quote Management</button>
+                    </a>
+                    <p class="admin-note">Moderator only</p>
+                <?php endif; ?>
             </div>
 
-            <!-- Gesture Poll -->
             <div class="feature-card">
                 <div class="feature-icon">💬</div>
                 <h3>Gesture Poll</h3>
                 <p>"How are you feeling?" — click an emoji to receive a curated Acceptance message from the club.</p>
                 <div class="feature-placeholder">
-                    <!-- TODO: PHP — submit emoji vote, return acceptance message from DB -->
                     <div class="emoji-row">
                         <button class="emoji-btn" data-emoji="😌" onclick="submitMood('😌', this)">😌</button>
                         <button class="emoji-btn" data-emoji="😐" onclick="submitMood('😐', this)">😐</button>
@@ -393,7 +367,6 @@ if (!isset($_SESSION['userId'])) {
                 </div>
             </div>
 
-            <!-- Gesture Calendar -->
             <div class="feature-card">
                 <div class="wrapper">
                     <header>
@@ -405,13 +378,7 @@ if (!isset($_SESSION['userId'])) {
                     </header>
                     <div class="calendar">
                         <ul class="weeks">
-                            <li>Sun</li>
-                            <li>Mon</li>
-                            <li>Tue</li>
-                            <li>Wed</li>
-                            <li>Thu</li>
-                            <li>Fri</li>
-                            <li>Sat</li>
+                            <li>Sun</li><li>Mon</li><li>Tue</li><li>Wed</li><li>Thu</li><li>Fri</li><li>Sat</li>
                         </ul>
                         <ul class="days"></ul>
                     </div>
@@ -419,25 +386,19 @@ if (!isset($_SESSION['userId'])) {
                 <div id="mood-stats"></div>
             </div>
 
-            <!-- Community qanda -->
             <div class="feature-card">
                 <div class="feature-icon">🌿</div>
                 <h3>Moderator Q&amp;A</h3>
                 <div class="feature-placeholder">
-                    <!-- TODO: PHP — fetch moderator question + community answers from DB -->
                     <div class="qa-placeholder">
                         <div id="qa-container">
                             <p id="qa-question"></p>
-
                             <div id="qa-answer-box" class="hidden">
                                 <input class="input" id="qa-input" placeholder="Your answer..." />
                                 <button class="submit" onclick="submitAnswer()">Submit</button>
                             </div>
-
                             <p id="qa-user-answer" class="hidden"></p><br>
-
                             <div id="qa-others"></div> 
-
                             <?php if ($_SESSION['isAdmin']): ?>
                                 <button onclick="showQuestionModal()" class="admin-btn">+ Add Question</button>
                                 <p class="admin-note">Moderator only</p>
@@ -457,36 +418,30 @@ if (!isset($_SESSION['userId'])) {
             <?php if ($_SESSION['isAdmin']): ?>
                 <p class="admin-warning">You are an administrator</p>
             <?php endif; ?>
-
             <input class="input" id="quote-input" placeholder="Enter quote"><br>
             <input class="input" id="author-input" placeholder="Author"><br>
             <button class="submit" id="submit-quote">Submit</button>
-
             <p id="modal-message"></p>
         </div>
     </div>
 
     <div id="global-modal" class="modal hidden">
         <div class="modal-content">
-
             <h3 id="modal-title">Title</h3>
             <p id="modal-message-text">Message</p>
-
             <button id="modal-ok-btn">OK</button>
         </div>
     </div>
 
     <div id="question-modal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h3>Add Question</h3>
-
-        <input class="input" id="question-input" placeholder="Enter question"><br>
-        <button class="submit" id="submit-question">Submit</button>
-
-        <p id="question-message"></p>
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Add Question</h3>
+            <input class="input" id="question-input" placeholder="Enter question"><br>
+            <button class="submit" id="submit-question">Submit</button>
+            <p id="question-message"></p>
+        </div>
     </div>
-</div>
 </section>
 
 <script>

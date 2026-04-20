@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Login page — handles user authentication, session management, and redirects based on admin status
+
 session_start();
 
 if (isset($_SESSION['userId'])) {
@@ -11,8 +15,6 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn = new mysqli("localhost", "tana42_local", "+im}Zbr.", "tana42_db");
-    //$conn = new mysqli("localhost", "caij95_local", "J(gqn9V%", "caii95_db");
-    //$conn = new mysqli("localhost", "root", "", "caij95_db");
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -48,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->close();
 }
 
-include 'includes/header.php'; // outputs <!DOCTYPE html>, <html>, <head>, <body>, and <nav>
+include 'includes/header.php';
 ?>
 
 <style>

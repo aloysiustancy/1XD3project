@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Returns today's quote. If none is set, picks one randomly and assigns it to today.
+ 
 session_start();
 header('Content-Type: application/json');
 require 'db.php';

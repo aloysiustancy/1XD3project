@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Returns whether the current user has logged a mood today, and which emoji they picked.
+ 
 session_start();
 header('Content-Type: application/json');
 require 'db.php';

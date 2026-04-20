@@ -1,10 +1,18 @@
 <!-- /includes/header.php -->
-<?php 
+<?php
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Shared page header. Starts the session, checks login/admin status,
+ *              and renders the <head> and nav bar for every page.
+ */
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$isLoggedIn = isset($_SESSION['userId']);
-$isAdmin    = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true;
+
+$isLoggedIn   = isset($_SESSION['userId']);
+$isAdmin      = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true;
 $current_page = basename($_SERVER['PHP_SELF'], ".php");
 ?>
 <!DOCTYPE html>

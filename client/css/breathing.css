@@ -1,6 +1,10 @@
-/* ══ Breathing Exercise Component ══════════════════════════════
-   Polished to match MMC design system
-═══════════════════════════════════════════════════════════════ */
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Styles for the breathing exercise component.
+ *              Covers the pattern tabs, animated circle, phase/count text,
+ *              control buttons, and cycle dots.
+ */
 
 .br-root {
     display: flex;
@@ -80,7 +84,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
+    pointer-events: none; /* clicks pass through to the canvas below */
     user-select: none;
     z-index: 2;
 }
@@ -214,6 +218,7 @@
 }
 
 /* ── Accessibility ────────────────────────────────────────── */
+/* Visually hides an element while keeping it readable by screen readers */
 .sr-only {
     position: absolute;
     width: 1px;

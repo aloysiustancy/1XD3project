@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Returns today's community question, the current user's answer, and up to 10 random answers from others.
+
 session_start();
 header('Content-Type: application/json');
 require 'db.php';

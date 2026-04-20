@@ -1,3 +1,11 @@
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Styles for the admin dashboard page.
+ *              Covers the two-column layout, inputs, buttons, quote list,
+ *              toast notifications, loading spinner, and the Add Event modal.
+ */
+
 /* ── Dashboard wrapper ── */
 .dashboard-wrap {
     padding: 48px 32px 72px;
@@ -59,7 +67,7 @@
     box-shadow: 0 0 0 3px rgba(44,95,46,0.12);
 }
 
-/* ── Icon button (+ style from image) ── */
+/* ── Icon button ── */
 .icon-btn {
     width: 42px;
     height: 42px;
@@ -74,7 +82,7 @@
     flex-shrink: 0;
     transition: background 0.2s;
 }
-.icon-btn:hover { background: #3a7a3d; }
+.icon-btn:hover    { background: #3a7a3d; }
 .icon-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 /* ── Pill button ── */
@@ -95,7 +103,7 @@
     cursor: pointer;
     transition: background 0.2s;
 }
-.pill-btn:hover { background: #3a7a3d; }
+.pill-btn:hover    { background: #3a7a3d; }
 .pill-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .pill-btn-outline {
@@ -115,10 +123,10 @@
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
 }
-.pill-btn-outline:hover { background: var(--green-dark); color: #fff; }
+.pill-btn-outline:hover    { background: var(--green-dark); color: #fff; }
 .pill-btn-outline:disabled { opacity: 0.55; cursor: not-allowed; }
 
-/* ── Inline row (label + icon-btn) ── */
+/* ── Inline row (input + icon-btn side by side) ── */
 .dash-row {
     display: flex;
     align-items: center;
@@ -225,12 +233,12 @@
     padding: 10px 0;
 }
 
-/* ── Toast ── */
+/* ── Toast notification ── */
 #toast {
     position: fixed;
     bottom: 28px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(20px); /* starts below final position; .show slides it up */
     background: var(--green-dark);
     color: #fff;
     padding: 11px 26px;
@@ -244,7 +252,7 @@
     z-index: 9999;
     white-space: nowrap;
 }
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.show  { opacity: 1; transform: translateX(-50%) translateY(0); }
 #toast.error { background: #a0323c; }
 
 /* ── Spinner ── */
@@ -253,14 +261,14 @@
     width: 13px;
     height: 13px;
     border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: #fff;
+    border-top-color: #fff; /* only the top segment is solid, creating the spin effect */
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 700px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
+    .dashboard-grid  { grid-template-columns: 1fr; }
     .dashboard-panel { padding: 28px 20px; }
 }
 
@@ -290,7 +298,7 @@
     width: 100%;
     max-width: 520px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.18);
-    transform: translateY(16px);
+    transform: translateY(16px); /* starts slightly below; .open slides it up */
     transition: transform 0.2s;
 }
 .modal-overlay.open .modal-card {
@@ -351,6 +359,7 @@
 .modal-row .modal-field {
     margin-bottom: 18px;
 }
+
 /* ── Upload area ── */
 .upload-area {
     display: flex;
@@ -370,6 +379,7 @@
     border-color: var(--green-dark);
     background: #f3faf0;
 }
+/* The real file input is hidden; clicking .upload-area triggers it via JS */
 .upload-area input[type="file"] {
     display: none;
 }
