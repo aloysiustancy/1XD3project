@@ -52,7 +52,6 @@ function loadQA() {
 
             // Show other people's answers
             if (answered && data.others && data.others.length > 0) {
-            if (data.others && data.others.length > 0) {
                 let html = `
                     <table class="qa-table">
                         <tr>
@@ -61,25 +60,17 @@ function loadQA() {
                         <tr><th>UserID</th><th>Answer</th></tr>
                 `;
                 data.others.forEach(a => {
-                    html += `
-                        <tr>
-                            <td>${a.answerText}</td>
-                        </tr>
-                    `;
                     html += `<tr><td>${a.userID}</td><td>${a.answerText}</td></tr>`;
                 });
                 html += "</table>";
                 othersContainer.innerHTML = html;
-            } else if(answered) {
-
-            } else if (data.userAnswer) {
+            } else if (answered) {
                 othersContainer.innerHTML = `
                     <p style="color:red; font-size:20px; margin-top:10px;">
                         No other responses yet. Be the first!
                     </p>
                 `;
-            } 
-            if (!answered) {
+            } else {
                 othersContainer.innerHTML = `
                     <p style="color:gray; margin-top:10px;">
                         Answer the question to see others' responses.

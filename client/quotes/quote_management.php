@@ -167,18 +167,8 @@ function setTomorrow(id) {
 }
 
 // delete
-function deleteQuote(id){
-    if (id === currentTomorrow) { showModal("Notice", "You have selected this quote"); return; }
-    fetch("set_tomorrow_quote.php", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({id}) })
-        .then(res => res.json())
-        .then(data => { if (data.success) showModal("Success", "Congratulations, successful setup.", () => location.reload()); });
-}
-
-/**
- * Deletes a quote after the user confirms.
- * @param {number} id - quoteID to delete
- */
 function deleteQuote(id) {
+    if (id === currentTomorrow) { showModal("Notice", "You have selected this quote"); return; }
     showConfirm("Are you sure to delete this quote?", () => {
         fetch("delete_quote.php", {
             method: "POST",
@@ -194,21 +184,13 @@ function deleteQuote(id) {
                     location.reload();
                 });
             } else {
-                // Error message displayed
                 showModal("Error", data.error || "Failed to delete quote");
             }
         })
         .catch(err => {
-            // Network error detected
             console.error(err);
             showModal("Error", "Network error: " + err.message);
         });
-    });
-}
-
-        fetch("delete_quote.php", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({id}) })
-            .then(res => res.json())
-            .then(data => { if (data.success) showModal("Deleted", "Quote deleted successfully.", () => location.reload()); });
     });
 }
 
