@@ -334,23 +334,30 @@ function setTomorrow(id) {
 
 // delete
 function deleteQuote(id){
-
     showConfirm("Are you sure to delete this quote?", () => {
-
         fetch("delete_quote.php", {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({id})
         })
-        .then(res=>res.json())
-        .then(data=>{
-            if(data.success){
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
                 showModal("Deleted", "Quote deleted successfully.", () => {
                     location.reload();
                 });
+            } else {
+                // Error message displayed
+                showModal("Error", data.error || "Failed to delete quote");
             }
+        })
+        .catch(err => {
+            // Network error detected
+            console.error(err);
+            showModal("Error", "Network error: " + err.message);
         });
-
     });
 }
 
