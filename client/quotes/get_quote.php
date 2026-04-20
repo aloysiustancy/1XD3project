@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 require 'db.php';
 
-// 1️⃣ 先查今天有没有
+// 1️ First check if there is one today.
 $stmt = $pdo->prepare("
     SELECT * FROM quotes
     WHERE activeDate = CURDATE()
@@ -12,7 +12,7 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $quote = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// 2️⃣ 如果没有 → 随机选一个
+// 2️ If not, select one randomly.
 if (!$quote) {
 
     $stmt = $pdo->query("
@@ -25,10 +25,10 @@ if (!$quote) {
 
     if ($quote) {
 
-        // 清空旧的
+        // Clear the old
         $pdo->exec("UPDATE quotes SET activeDate = NULL");
 
-        // 设置今天的
+        // Set today
         $update = $pdo->prepare("
             UPDATE quotes
             SET activeDate = CURDATE()
@@ -38,7 +38,7 @@ if (!$quote) {
     }
 }
 
-// ❗关键：保证返回的是 JSON object
+// Ensure that the returned value is a JSON object.
 if (!$quote) {
     echo json_encode([
         "quoteText" => "No quote available",

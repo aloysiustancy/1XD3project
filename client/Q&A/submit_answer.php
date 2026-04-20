@@ -1,8 +1,7 @@
 <?php
 session_start();
-
 header('Content-Type: application/json');
-require_once 'db.php';
+require 'db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -11,8 +10,8 @@ $answerText = $data['answerText'];
 
 $userID = $_SESSION['userId'] ?? null;
 
-// 插入答案
-// 先检查是否回答过
+// Insert answer
+// First check if it has been answered
 $stmt = $pdo->prepare("
     SELECT * FROM communityAnswers
     WHERE questionID = ? AND userID <=> ?
@@ -24,7 +23,7 @@ if ($stmt->fetch()) {
     exit;
 }
 
-// 插入
+// Insert
 $stmt = $pdo->prepare("
     INSERT INTO communityAnswers (questionID, userID, answerText)
     VALUES (?, ?, ?)

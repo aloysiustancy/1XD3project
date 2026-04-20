@@ -1,15 +1,15 @@
 let moodLocked = false;
 let todayEmoji = null;
 
-// 页面加载时检查今天的 mood
+// Check today's mood when the page loads
 document.addEventListener("DOMContentLoaded", () => {
     checkTodayMood();
 });
 
-// 点击 emoji
+// Click emoji
 function submitMood(emoji, btn) {
 
-    // 如果今天已经选过
+    // If you have already chosen today
     if (moodLocked) {
         showModal(
             "Mood Locked",
@@ -18,7 +18,7 @@ function submitMood(emoji, btn) {
         return;
     }
 
-    // 提交到后端
+    // Submit to backend
     fetch("Q&A/submit_mood.php", {
         method: "POST",
         headers: {
@@ -29,7 +29,7 @@ function submitMood(emoji, btn) {
     .then(res => res.json())
     .then(data => {
 
-        // 后端说已经选过（双保险）
+        // The backend team said they've already made a selection (double insurance).
         if (data.status === "exists") {
             moodLocked = true;
 
@@ -40,7 +40,7 @@ function submitMood(emoji, btn) {
             return;
         }
 
-        // 高亮当前选中的 emoji
+        // Highlight the currently selected emoji
         highlightEmoji(emoji);
         updateCalendar();
         loadStats();
@@ -55,7 +55,7 @@ function submitMood(emoji, btn) {
     });
 }
 
-// 页面加载时调用
+// Called when the page loads
 function checkTodayMood() {
     fetch("Q&A/get_today_mood.php")
         .then(res => res.json())
@@ -75,7 +75,7 @@ function checkTodayMood() {
         });
 }
 
-// 高亮函数（单独封装）
+// Highlight function (separately encapsulated)
 function highlightEmoji(emoji) {
     document.querySelectorAll(".emoji-btn").forEach(btn => {
         btn.classList.remove("active");
@@ -96,7 +96,7 @@ function showModal(title, message) {
     modal.classList.remove("hidden");
 }
 
-// 关闭 modal（修复多个 close-modal 冲突）
+// Turn off modal
 document.querySelectorAll("#close-modal").forEach(btn => {
     btn.onclick = () => {
         document.getElementById("global-modal").classList.add("hidden");
@@ -107,7 +107,7 @@ document.getElementById("modal-ok-btn").onclick = () => {
     document.getElementById("global-modal").classList.add("hidden");
 };
 
-// 点击背景关闭
+// Click the background icon to turn off.
 document.getElementById("global-modal").onclick = (event) => {
     if (event.target.id === "global-modal") {
         event.currentTarget.classList.add("hidden");

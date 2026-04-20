@@ -7,14 +7,14 @@ if (!$_SESSION['isAdmin']) exit;
 $data = json_decode(file_get_contents("php://input"), true);
 $id = $data['id'];
 
-// ❗清空“明天”
+// Clear away "tomorrow"
 $pdo->exec("
     UPDATE quotes 
     SET activeDate = NULL 
     WHERE activeDate = CURDATE() + INTERVAL 1 DAY
 ");
 
-// ❗设置新明天
+// Setting a New Tomorrow
 $stmt = $pdo->prepare("
     UPDATE quotes
     SET activeDate = CURDATE() + INTERVAL 1 DAY
