@@ -1,4 +1,7 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Adds a new admin user to the database.
 
 session_start();
 

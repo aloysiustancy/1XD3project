@@ -1,34 +1,10 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Registration page — handles new user sign-up with real-time validation for email, password strength, and confirmation
 
-<style>
-    .register-card {
-        background: #fff;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 400px;
-        margin: 4rem auto;
-    }
-    .form-row { display: flex; gap: 1rem; }
-    .form-row .form-group { flex: 1; }
-    .form-group { margin-bottom: 1rem; }
-    label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; color: #555; }
-    input {
-        width: 100%; padding: 0.65rem 0.8rem;
-        border: 1px solid #ccc; border-radius: 5px; font-size: 1rem;
-    }
-    input:focus { outline: none; border-color: #4a90e2; }
-    .error { background: #ffe0e0; color: #c0392b; padding: 0.6rem 0.8rem; border-radius: 5px; margin-bottom: 1rem; }
-    .success { background: #e0f7e9; color: #27ae60; padding: 0.6rem 0.8rem; border-radius: 5px; margin-bottom: 1rem; }
-    button {
-        width: 100%; padding: 0.75rem; background: #4a90e2;
-        color: #fff; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;
-    }
-    button:hover { background: #357abd; }
-    .login-link { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #555; }
-    .login-link a { color: #4a90e2; text-decoration: none; }
-</style>
+include 'includes/header.php';
+?>
 
 <style>
     .register-card {
@@ -53,12 +29,10 @@
     input.invalid { border-color: #e74c3c; }
     input.valid   { border-color: #27ae60; }
  
-    /* ── Field hints ── */
     .field-hint { font-size: 0.78rem; margin-top: 4px; min-height: 1.1em; }
     .field-hint.ok  { color: #27ae60; }
     .field-hint.err { color: #e74c3c; }
  
-    /* ── Strength bar ── */
     .strength-bar-wrap { display: flex; gap: 4px; margin-top: 6px; }
     .strength-seg {
         flex: 1; height: 4px; border-radius: 2px;
@@ -71,7 +45,6 @@
  
     .strength-label { font-size: 0.78rem; margin-top: 4px; font-weight: 500; min-height: 1.1em; }
  
-    /* ── Alerts ── */
     .error   { background: #ffe0e0; color: #c0392b; padding: 0.6rem 0.8rem; border-radius: 5px; margin-bottom: 1rem; }
     .success { background: #e0f7e9; color: #27ae60; padding: 0.6rem 0.8rem; border-radius: 5px; margin-bottom: 1rem; }
  
@@ -151,7 +124,7 @@
 <script>
 (function () {
  
-    /* ── Elements ── */
+    /* ── DOM Elements ── */
     var emailEl       = document.getElementById('email');
     var emailHint     = document.getElementById('emailHint');
     var pwEl          = document.getElementById('password');
@@ -161,15 +134,10 @@
     var strengthLabel = document.getElementById('strengthLabel');
     var form          = document.getElementById('registerForm');
  
-    /* Score from the last completed AJAX call — used by submit guard */
-    var lastScore = 0;
- 
-    var SEG_COLORS   = ['', 'seg-weak', 'seg-fair', 'seg-good', 'seg-strong'];
-    var LABEL_COLORS = { 0: '#e74c3c', 1: '#e74c3c', 2: '#f39c12', 3: '#27ae60', 4: '#27ae60' };
- 
-    /* ── Email validation ── */
-    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
- 
+    /**
+     * Validates email format using regex and updates UI feedback
+     * @returns {boolean} True if email is valid, false otherwise
+     */
     function validateEmail() {
         var val = emailEl.value.trim();
         if (!val)               { setEmail('', '',      '');                             return false; }
@@ -177,6 +145,13 @@
         else                    { setEmail('invalid', 'err', 'Enter a valid email.');   return false; }
     }
  
+    /**
+     * Updates email field styling and hint message
+     * @param {string} cls  - CSS class for field state ('valid', 'invalid', or '')
+     * @param {string} hint - Hint class suffix ('ok', 'err', or '')
+     * @param {string} msg  - Text to display in the hint element
+     * @returns {void}
+     */
     function setEmail(cls, hint, msg) {
         emailEl.className     = cls;
         emailHint.className   = 'field-hint ' + hint;
@@ -188,7 +163,17 @@
  
     /* ── Password strength — AJAX ── */
     var debounceTimer = null;
+    var lastScore = 0;
+    var SEG_COLORS   = ['', 'seg-weak', 'seg-fair', 'seg-good', 'seg-strong'];
+    var LABEL_COLORS = { 0: '#e74c3c', 1: '#e74c3c', 2: '#f39c12', 3: '#27ae60', 4: '#27ae60' };
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
  
+    /**
+     * Updates password strength UI based on score from server
+     * @param {number} score - Strength score 0-4 from check_password.php
+     * @param {string} label - Human-readable label (e.g., "Weak", "Strong")
+     * @returns {void}
+     */
     function applyStrength(score, label) {
         lastScore = score;
         var color = SEG_COLORS[score];
@@ -201,6 +186,10 @@
         validateConfirm();
     }
  
+    /**
+     * Fetches password strength score from server via AJAX
+     * @returns {void}
+     */
     function fetchStrength() {
         var pw = pwEl.value;
         if (!pw) { applyStrength(0, ''); return; }
@@ -217,13 +206,14 @@
  
     pwEl.addEventListener('input', function () {
         clearTimeout(debounceTimer);
-        /* Instant local feedback for obviously-short passwords */
         if (pwEl.value.length < 6) { applyStrength(0, 'Too short'); return; }
-        /* Debounce the network call by 350 ms */
         debounceTimer = setTimeout(fetchStrength, 350);
     });
  
-    /* ── Confirm password ── */
+    /**
+     * Validates that password and confirmation match, updates UI
+     * @returns {boolean} True if passwords match, false otherwise
+     */
     function validateConfirm() {
         var pw  = pwEl.value;
         var cpw = cpwEl.value;

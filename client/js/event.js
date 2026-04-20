@@ -1,6 +1,18 @@
-/* ── Image preview ── */
+/**
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Handles the event creation form on the admin dashboard.
+ *              Lets admins preview an image before uploading, and sends the
+ *              new event data to the server on form submission.
+ */
+
+/**
+ * Shows a preview of the selected image file in the upload area.
+ *
+ * @param {HTMLInputElement} input - The file input element
+ */
 function previewImage(input) {
-    const preview = document.getElementById('upload-preview');
+    const preview     = document.getElementById('upload-preview');
     const placeholder = document.getElementById('upload-placeholder');
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -13,15 +25,23 @@ function previewImage(input) {
     }
 }
 
+/**
+ * Clears the image preview and shows the upload placeholder again.
+ */
 function resetImagePreview() {
-    const preview = document.getElementById('upload-preview');
+    const preview     = document.getElementById('upload-preview');
     const placeholder = document.getElementById('upload-placeholder');
     preview.src = '';
     preview.style.display = 'none';
     placeholder.style.display = 'flex';
 }
 
-/* ── Submit event ── */
+/**
+ * Sends the event form data to the server as a POST request.
+ * Shows a toast on success or failure.
+ *
+ * @param {Event} e - The form submit event (used to prevent page refresh)
+ */
 async function submitEvent(e) {
     e.preventDefault();
 
@@ -44,10 +64,7 @@ async function submitEvent(e) {
     btn.innerHTML = '<span class="spinner"></span> Saving…';
 
     try {
-        const res = await fetch('api/addEvent.php', {
-            method: 'POST',
-            body: formData
-        });
+        const res  = await fetch('api/addEvent.php', { method: 'POST', body: formData });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         showToast('Event created!');

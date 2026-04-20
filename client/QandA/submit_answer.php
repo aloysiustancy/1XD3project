@@ -1,17 +1,18 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Saves a user's answer to today's community question. Each user can only answer once.
+
 session_start();
 header('Content-Type: application/json');
 require 'db.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
-
+$data       = json_decode(file_get_contents("php://input"), true);
 $questionID = $data['questionID'];
 $answerText = $data['answerText'];
+$userID     = $_SESSION['userId'] ?? null;
 
-$userID = $_SESSION['userId'] ?? null;
-
-// Insert answer
-// First check if it has been answered
+// Check if user already answered
 $stmt = $pdo->prepare("
     SELECT * FROM communityanswers
     WHERE questionID = ? AND userID <=> ?
@@ -23,7 +24,6 @@ if ($stmt->fetch()) {
     exit;
 }
 
-// Insert
 $stmt = $pdo->prepare("
     INSERT INTO communityanswers (questionID, userID, answerText)
     VALUES (?, ?, ?)

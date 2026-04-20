@@ -1,9 +1,13 @@
-/* ============================================================
-   HOME PAGE ADDITIONS — append after the events page rules
-   in css/style.css
-   ============================================================ */
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Extra styles for the home page.
+ *              Covers the upcoming event banner, the myths vs. facts grid,
+ *              and the breathing exercise wrapper.
+ *              Append after style.css.
+ */
 
-/* ── Home event banner (teaser, not full spotlight) ────────── */
+/* ── Home event banner ── */
 .home-event-banner {
     max-width: 820px;
     margin: 0 auto;
@@ -29,7 +33,7 @@
 
 .home-event-banner-body {
     flex: 1;
-    min-width: 0;
+    min-width: 0; /* required for text-overflow: ellipsis to work inside a flex child */
 }
 
 .home-event-label {
@@ -61,7 +65,7 @@
     white-space: nowrap;
 }
 
-/* ── Myths grid ────────────────────────────────────────────── */
+/* ── Myths grid ── */
 .myths-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -139,16 +143,16 @@
     width: fit-content;
 }
 
-/* ── Breathing wrapper ─────────────────────────────────────── */
+/* ── Breathing wrapper ── */
 .breathing-wrapper {
     max-width: 500px;
     margin: 32px auto 0;
 }
 
-/* ── Override: old .myth/.fact — kept for safety but hidden ── */
+/* Hidden — kept so old HTML referencing .myth doesn't break */
 .myth { display: none; }
 
-/* ── Responsive — Home ─────────────────────────────────────── */
+/* ── Responsive ── */
 @media (max-width: 860px) {
     .myths-grid {
         grid-template-columns: 1fr;

@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// AJAX endpoint — sets the featured quote for tomorrow (admin-only)
+
 session_start();
 require 'db.php';
 

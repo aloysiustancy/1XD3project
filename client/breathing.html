@@ -1,3 +1,10 @@
+<!--
+  Your Name
+  Date Created: [date]
+  Breathing Exercise Component - Interactive guided breathing tool with multiple patterns (4-7-8, Box, Calm)
+  Handles canvas animation, cycle tracking, and user controls for mindfulness practice
+-->
+
 <!-- ══ BREATHING EXERCISE ════════════════════════════════════════
      Drop into breathing.css for custom styling.
      Requires no external dependencies.
@@ -44,6 +51,13 @@
 (function () {
 
     /* ── Patterns ─────────────────────────────────────────────── */
+    /**
+     * Configuration object for breathing patterns
+     * @property {Object} 478 - 4-7-8 Relaxation pattern
+     * @property {Object} box - Box breathing (4-4-4-4) pattern
+     * @property {Object} calm - Calm breathing (4-6) pattern
+     * Each pattern contains: phases (array of label/secs), totalCycles, and tip text
+     */
     var PATTERNS = {
         '478': {
             phases: [
@@ -74,40 +88,77 @@
         }
     };
 
-    /* ── DOM refs ─────────────────────────────────────────────── */
+    /* ── DOM references ───────────────────────────────────────── */
+    /** @type {HTMLCanvasElement} Canvas element for drawing the breathing circle */
     var canvas     = document.getElementById('brCircle');
+    /** @type {CanvasRenderingContext2D} 2D rendering context for the canvas */
     var ctx        = canvas.getContext('2d');
+    /** @type {HTMLElement} Element displaying current breathing phase label */
     var phaseEl    = document.getElementById('brPhase');
+    /** @type {HTMLElement} Element displaying countdown seconds */
     var countEl    = document.getElementById('brCount');
+    /** @type {HTMLElement} Start/Restart button element */
     var startBtn   = document.getElementById('brStart');
+    /** @type {HTMLElement} Reset button element */
     var resetBtn   = document.getElementById('brReset');
+    /** @type {HTMLElement} Element showing completed cycle count */
     var cycleLabel = document.getElementById('brCycleLabel');
+    /** @type {HTMLElement} Container for cycle indicator dots */
     var dotsEl     = document.getElementById('brDots');
+    /** @type {HTMLElement} Element displaying pattern tip text */
     var tipEl      = document.getElementById('brTip');
 
-    /* ── State ────────────────────────────────────────────────── */
+    /* ── Application state ────────────────────────────────────── */
+    /** @type {Object} Currently selected breathing pattern configuration */
     var pat        = PATTERNS['478'];
+    /** @type {boolean} Whether animation loop is currently running */
     var running    = false;
+    /** @type {number|null} RequestAnimationFrame ID for canceling animation */
     var raf        = null;
+    /** @type {number} Index of current phase within the pattern */
     var phaseIndex = 0;
+    /** @type {number} Number of completed breathing cycles */
     var cyclesDone = 0;
+    /** @type {number|null} Timestamp when current phase started (for timing) */
     var phaseStart = null;
 
-    /* ── Canvas constants ─────────────────────────────────────── */
-    var CX = 120, CY = 120, R = 90, TRACK_W = 12;
+    /* ── Canvas drawing constants ─────────────────────────────── */
+    /** @type {number} Canvas center X coordinate */
+    var CX = 120;
+    /** @type {number} Canvas center Y coordinate */
+    var CY = 120;
+    /** @type {number} Radius of the main track circle */
+    var R = 90;
+    /** @type {number} Width of the track ring in pixels */
+    var TRACK_W = 12;
 
-    /* Phase → arc colour (matches MMC green palette) */
+    /**
+     * Color mapping for each breathing phase (MMC green palette)
+     * @type {Object<string, string>}
+     */
     var PHASE_COLORS = {
         'Inhale': '#2c5f2e',   /* forest green */
         'Hold'  : '#3a6186',   /* slate blue   */
         'Exhale': '#5c4a7f'    /* soft purple  */
     };
 
-    /* ── Helpers ──────────────────────────────────────────────── */
+    /* ── Helper functions ─────────────────────────────────────── */
+
+    /**
+     * Retrieves a CSS custom property value from the document root
+     * @param {string} name - The CSS variable name (e.g., '--color-primary')
+     * @returns {string} The trimmed value of the CSS variable, or '#ccc' as fallback
+     */
     function cssVar(name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#ccc';
     }
 
+    /**
+     * Calculates the inner bubble radius based on breathing phase and progress
+     * @param {string} label - Current phase label ('Inhale', 'Hold', or 'Exhale')
+     * @param {number} progress - Animation progress from 0.0 to 1.0
+     * @returns {number} Calculated radius between 28px (min) and 70px (max)
+     */
     function innerR(label, progress) {
         var lo = 28, hi = 70;
         if (label === 'Inhale') return lo + (hi - lo) * progress;
@@ -115,21 +166,28 @@
         return (lo + hi) / 2;
     }
 
-    /* ── Draw ─────────────────────────────────────────────────── */
+    /* ── Drawing functions ────────────────────────────────────── */
+
+    /**
+     * Draws the breathing animation frame on canvas
+     * @param {number} progress - Current phase progress (0.0 to 1.0)
+     * @param {number} phaseIdx - Index of current phase in pattern.phases array
+     * @returns {void}
+     */
     function draw(progress, phaseIdx) {
         ctx.clearRect(0, 0, 240, 240);
         var phase  = pat.phases[phaseIdx % pat.phases.length];
         var color  = PHASE_COLORS[phase.label] || '#2c5f2e';
         var track  = 'rgba(0,0,0,0.08)';
 
-        /* Track ring */
+        /* Track ring (background) */
         ctx.beginPath();
         ctx.arc(CX, CY, R, 0, Math.PI * 2);
         ctx.strokeStyle = track;
         ctx.lineWidth   = TRACK_W;
         ctx.stroke();
 
-        /* Progress arc */
+        /* Progress arc (active phase indicator) */
         var start = -Math.PI / 2;
         ctx.beginPath();
         ctx.arc(CX, CY, R, start, start + progress * Math.PI * 2);
@@ -138,7 +196,7 @@
         ctx.lineCap     = 'round';
         ctx.stroke();
 
-        /* Breathing bubble */
+        /* Breathing bubble (expands/contracts with breath) */
         var bR = innerR(phase.label, progress);
         ctx.beginPath();
         ctx.arc(CX, CY, bR, 0, Math.PI * 2);
@@ -146,6 +204,10 @@
         ctx.fill();
     }
 
+    /**
+     * Draws the idle state canvas (no animation, static ring + center dot)
+     * @returns {void}
+     */
     function drawIdle() {
         ctx.clearRect(0, 0, 240, 240);
         var track = 'rgba(0,0,0,0.08)';
@@ -160,7 +222,12 @@
         ctx.fill();
     }
 
-    /* ── Dots ─────────────────────────────────────────────────── */
+    /* ── Cycle indicator functions ────────────────────────────── */
+
+    /**
+     * Builds the cycle indicator dots based on current pattern's totalCycles
+     * @returns {void}
+     */
     function buildDots() {
         dotsEl.innerHTML = '';
         for (var i = 0; i < pat.totalCycles; i++) {
@@ -170,6 +237,10 @@
         }
     }
 
+    /**
+     * Updates the visual state of cycle indicator dots (done/current/pending)
+     * @returns {void}
+     */
     function updateDots() {
         var dots = dotsEl.querySelectorAll('.br-dot');
         dots.forEach(function (d, i) {
@@ -180,6 +251,12 @@
     }
 
     /* ── Animation loop ───────────────────────────────────────── */
+
+    /**
+     * Animation frame callback that updates phase timing, UI, and canvas drawing
+     * @param {number} ts - Current timestamp from requestAnimationFrame (milliseconds)
+     * @returns {void}
+     */
     function tick(ts) {
         if (!phaseStart) phaseStart = ts;
         var phase   = pat.phases[phaseIndex];
@@ -206,7 +283,12 @@
         raf = requestAnimationFrame(tick);
     }
 
-    /* ── Controls ─────────────────────────────────────────────── */
+    /* ── Control functions ────────────────────────────────────── */
+
+    /**
+     * Starts or restarts the breathing exercise animation
+     * @returns {void}
+     */
     function start() {
         running    = true;
         phaseIndex = 0;
@@ -220,6 +302,10 @@
         raf = requestAnimationFrame(tick);
     }
 
+    /**
+     * Resets the component to initial idle state, canceling any running animation
+     * @returns {void}
+     */
     function reset() {
         if (raf) cancelAnimationFrame(raf);
         running    = false;
@@ -236,6 +322,10 @@
         drawIdle();
     }
 
+    /**
+     * Handles completion of all breathing cycles, updates UI to finished state
+     * @returns {void}
+     */
     function finish() {
         running = false;
         phaseEl.textContent  = 'Done';
@@ -246,6 +336,7 @@
     }
 
     /* ── Event listeners ──────────────────────────────────────── */
+
     startBtn.addEventListener('click', function () {
         if (raf) cancelAnimationFrame(raf);
         start();
@@ -268,7 +359,7 @@
         });
     });
 
-    /* ── Init ─────────────────────────────────────────────────── */
+    /* ── Initialization ───────────────────────────────────────── */
     buildDots();
     drawIdle();
 

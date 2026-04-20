@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Returns all mood entries grouped by date, with emoji counts per day.
+
 session_start();
 header('Content-Type: application/json');
 require 'db.php';

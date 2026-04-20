@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// The admin dashboard that manages events and creates new admins 
+
 session_start();
 
 if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {

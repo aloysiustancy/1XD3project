@@ -1,4 +1,10 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Members page — displays executive team roster and membership sign-up options
+
+include 'includes/header.php';
+?>
 
 <style>
     .page-hero {
@@ -56,7 +62,6 @@
         <p>McMaster students and faculty are welcome! Fill out our sign-up form to become a member and stay up to date on events.</p>
 
         <?php if (isset($_SESSION['userID'])): ?>
-            <!-- Already logged in — show a welcome note instead -->
             <p style="text-align:center; color: var(--green-dark); font-weight:700; margin-top:16px;">
                 ✅ You're already a member. Welcome back!
             </p>

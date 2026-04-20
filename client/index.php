@@ -1,7 +1,14 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Homepage — displays hero, event spotlight, mindfulness info, myths, and embedded breathing exercise
+
+include 'includes/header.php';
+?>
 
 <link rel="stylesheet" href="css/indexStyle.css">
 <link rel="stylesheet" href="css/breathing.css">
+
 <!-- ══ HERO ════════════════════════════════════════════════════ -->
 <section id="hero">
     <div id="hero-overlay"></div>

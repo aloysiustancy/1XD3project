@@ -1,5 +1,13 @@
 <?php
 ini_set('display_errors', 0);
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Handles adding a new event to the database.
+ *              Only accessible to logged-in admins.
+ *              Also saves an uploaded image if one is included.
+ */
+
 session_start();
 header('Content-Type: application/json');
 
@@ -34,7 +42,7 @@ $imagePath = null;
 if (!empty($_FILES['image']['tmp_name'])) {
     $file     = $_FILES['image'];
     $allowed  = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $mimeType = mime_content_type($file['tmp_name']);
+    $mimeType = mime_content_type($file['tmp_name']); // check real file type, not just the extension
 
     if (!in_array($mimeType, $allowed)) {
         echo json_encode(['error' => 'Only JPEG, PNG, GIF, and WebP images are allowed.']);
@@ -42,7 +50,7 @@ if (!empty($_FILES['image']['tmp_name'])) {
     }
 
     $ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $filename = uniqid('event_', true) . '.' . strtolower($ext);
+    $filename = uniqid('event_', true) . '.' . strtolower($ext); // unique name prevents overwriting existing files
     $destDir  = dirname(__DIR__) . '/images/';
     $destPath = $destDir . $filename;
 
@@ -63,7 +71,7 @@ try {
     $stmt->execute([$title, $eventDate, $eventTime, $location, $imagePath]);
     echo json_encode(['success' => true, 'message' => 'Event created!', 'image' => $imagePath]);
 } catch (Exception $e) {
-    // Clean up uploaded file if DB insert fails
+    // Delete the uploaded image if the DB insert fails so we don't leave orphan files
     if ($imagePath && file_exists(dirname(__DIR__) . '/' . $imagePath)) {
         unlink(dirname(__DIR__) . '/' . $imagePath);
     }

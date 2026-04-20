@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Adds a new user to the database.
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

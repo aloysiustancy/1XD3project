@@ -1,4 +1,10 @@
-// js/mobileMenu.js — TOG · McMaster Mindfulness Club
+/**
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Controls the mobile nav menu. Toggles open/close on the burger
+ *              button, and closes the menu when a link is tapped, the user clicks
+ *              outside the nav, or the Escape key is pressed.
+ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -7,21 +13,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!burger || !navLinks) return;
 
+    /**
+     * Closes the mobile menu.
+     */
     function closeMenu() {
         navLinks.classList.remove('nav-open');
         burger.classList.remove('is-active');
         burger.setAttribute('aria-expanded', 'false');
     }
 
+    /**
+     * Opens the mobile menu.
+     */
     function openMenu() {
         navLinks.classList.add('nav-open');
         burger.classList.add('is-active');
         burger.setAttribute('aria-expanded', 'true');
     }
 
-    // Toggle on burger click
     burger.addEventListener('click', function (e) {
-        e.stopPropagation();
+        e.stopPropagation(); // prevent the document click handler below from firing
         if (navLinks.classList.contains('nav-open')) {
             closeMenu();
         } else {
@@ -29,21 +40,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close when a nav link is tapped
     navLinks.addEventListener('click', function (e) {
-        if (e.target.classList.contains('nav-link')) {
-            closeMenu();
-        }
+        if (e.target.classList.contains('nav-link')) closeMenu();
     });
 
-    // Close when clicking anywhere outside the nav
     document.addEventListener('click', function (e) {
-        if (!e.target.closest('#nav')) {
-            closeMenu();
-        }
+        if (!e.target.closest('#nav')) closeMenu();
     });
 
-    // Close on Escape key
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closeMenu();
     });

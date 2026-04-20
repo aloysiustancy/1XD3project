@@ -1,4 +1,10 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Resources page — displays mindfulness recommendations for reading, watching, and McMaster courses
+
+include 'includes/header.php';
+?>
 
 <style>
     .page-hero {

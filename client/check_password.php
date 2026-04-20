@@ -1,29 +1,13 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Password strength checker AJAX endpoint — evaluates password and returns score 0-4 with label
+
 /**
- * check_password.php
- * AJAX endpoint — accepts POST { password: string }
- * Returns JSON { score: 0-4, label: string }
+ * Evaluates password strength based on length, character variety, and special characters
+ * @param string $pw The password string to evaluate
+ * @return int Strength score from 0 (too short) to 4 (strong)
  */
-
-header('Content-Type: application/json');
-
-// Only allow POST from same origin
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
-    exit;
-}
-
-$data     = json_decode(file_get_contents('php://input'), true);
-$password = $data['password'] ?? '';
-
-/* ── Scoring ─────────────────────────────────────────────────────
-   0  Too short  (< 6 chars)
-   1  Weak       (6+ chars, nothing else)
-   2  Fair       (+ length ≥ 10 OR mixed case)
-   3  Good       (+ digits)
-   4  Strong     (+ special characters)
-──────────────────────────────────────────────────────────────── */
 function scorePassword(string $pw): int {
     if (mb_strlen($pw) < 6) return 0;
 
@@ -37,6 +21,17 @@ function scorePassword(string $pw): int {
 
     return min($score, 4);
 }
+
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
+    exit;
+}
+
+$data     = json_decode(file_get_contents('php://input'), true);
+$password = $data['password'] ?? '';
 
 $labels = ['Too short', 'Weak', 'Fair', 'Good', 'Strong'];
 $score  = scorePassword($password);

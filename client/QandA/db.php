@@ -1,4 +1,8 @@
 <?php
+// Name: Brian, Aloysius, Haoxuan, Jason
+// Date: March 21, 2026
+// Connects to the database
+
 // Shared database for team
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'tana42_db');  

@@ -1,12 +1,11 @@
 <?php
-// mod/manage_events.php — Moderator Event Manager
-// TOG · McMaster Mindfulness Club · That One Goose (Brian)
-// Role-gated: only admins can INSERT or UPDATE events.
+// Your Name
+// Date Created: [date]
+// Admin page to add, edit, and delete club events.
 
 require_once '../includes/header.php';
-require_once '../quotes/db.php';   // reuse the shared PDO connection ($pdo)
+require_once '../quotes/db.php';
 
-// ── Role check ───────────────────────────────────────────────
 if (!$isAdmin) {
     http_response_code(403);
     echo '<div style="text-align:center;padding:80px 24px;">
@@ -20,9 +19,8 @@ if (!$isAdmin) {
 
 $successMsg = '';
 $errorMsg   = '';
-$editEvent  = null; // holds event data when editing
+$editEvent  = null;
 
-// ── Handle POST (INSERT or UPDATE) ───────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $title       = trim($_POST['title']       ?? '');
@@ -30,21 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $eventTime   = trim($_POST['eventTime']   ?? '');
     $location    = trim($_POST['location']    ?? '');
     $description = trim($_POST['description'] ?? '');
-    $eventID     = intval($_POST['eventID']   ?? 0);
+    $eventID     = intval($_POST['eventID']   ?? 0); // 0 = insert, >0 = update
 
-    // ── Server-side validation ────────────────────────────────
     $errors = [];
-    if ($title === '')                          $errors[] = 'Title is required.';
-    if ($eventDate === '')                      $errors[] = 'Date is required.';
-    if ($eventTime === '')                      $errors[] = 'Time is required.';
+    if ($title === '')     $errors[] = 'Title is required.';
+    if ($eventDate === '') $errors[] = 'Date is required.';
+    if ($eventTime === '') $errors[] = 'Time is required.';
     if (!empty($eventDate) && strtotime($eventDate) === false)
-                                                $errors[] = 'Invalid date format.';
+                           $errors[] = 'Invalid date format.';
 
     if ($errors) {
         $errorMsg = implode(' ', $errors);
     } else {
         if ($eventID > 0) {
-            // ── UPDATE existing event ─────────────────────────
             $stmt = $pdo->prepare(
                 'UPDATE events
                     SET title = :title,
@@ -63,9 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':eventID'     => $eventID,
             ]);
             $successMsg = 'Event updated successfully.';
-
         } else {
-            // ── INSERT new event ──────────────────────────────
             $stmt = $pdo->prepare(
                 'INSERT INTO events (title, eventDate, eventTime, location, description)
                  VALUES (:title, :eventDate, :eventTime, :location, :description)'
@@ -82,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ── Handle DELETE ─────────────────────────────────────────────
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $delID = intval($_GET['delete']);
     $stmt  = $pdo->prepare('DELETE FROM events WHERE eventID = :id');
@@ -90,20 +83,17 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $successMsg = 'Event deleted.';
 }
 
-// ── Load event for editing ────────────────────────────────────
 if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     $stmt = $pdo->prepare('SELECT * FROM events WHERE eventID = :id');
     $stmt->execute([':id' => intval($_GET['edit'])]);
     $editEvent = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// ── Fetch all events (newest first) ──────────────────────────
 $allEvents = $pdo->query(
     'SELECT * FROM events ORDER BY eventDate DESC, eventTime DESC'
 )->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- ── PAGE HERO ──────────────────────────────────────────── -->
 <header class="page-hero">
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
@@ -112,11 +102,9 @@ $allEvents = $pdo->query(
     </div>
 </header>
 
-<!-- ── MAIN CONTENT ───────────────────────────────────────── -->
 <section class="section">
     <div class="centered-block" style="max-width:860px;">
 
-        <!-- Flash messages -->
         <?php if ($successMsg): ?>
             <div class="flash flash-success"><?= htmlspecialchars($successMsg) ?></div>
         <?php endif; ?>
@@ -124,13 +112,11 @@ $allEvents = $pdo->query(
             <div class="flash flash-error"><?= htmlspecialchars($errorMsg) ?></div>
         <?php endif; ?>
 
-        <!-- ── Form (INSERT or UPDATE) ──────────────────────── -->
         <div class="manage-form-card">
             <h2><?= $editEvent ? 'Edit Event' : 'Add New Event' ?></h2>
 
             <form method="POST" action="manage_events.php" id="event-form" novalidate>
 
-                <!-- Hidden eventID — 0 means INSERT, >0 means UPDATE -->
                 <input type="hidden" name="eventID"
                        value="<?= $editEvent ? intval($editEvent['eventID']) : 0 ?>">
 
@@ -191,7 +177,6 @@ $allEvents = $pdo->query(
             </form>
         </div>
 
-        <!-- ── Events Table ─────────────────────────────────── -->
         <div class="manage-table-card">
             <h2>All Events</h2>
 
@@ -239,92 +224,32 @@ $allEvents = $pdo->query(
     </div>
 </section>
 
-<!-- ── Page-scoped styles ─────────────────────────────────── -->
 <style>
-    .flash {
-        padding: 12px 20px;
-        border-radius: 8px;
-        margin-bottom: 24px;
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
+    .flash { padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; font-weight: 600; font-size: 0.9rem; }
     .flash-success { background: #d4edda; color: #2c5f2e; border: 1px solid #b2dfbc; }
     .flash-error   { background: #f8d7da; color: #7a003c; border: 1px solid #f1aeb5; }
-
-    .manage-form-card,
-    .manage-table-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: 36px 40px;
-        margin-bottom: 36px;
-    }
-    .manage-form-card h2,
-    .manage-table-card h2 {
-        font-size: 1.35rem;
-        margin-bottom: 24px;
-        color: var(--green-dark);
-    }
-
-    .mform-row {
-        display: flex;
-        gap: 16px;
-        margin-bottom: 16px;
-    }
-    .mform-group {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        gap: 6px;
-    }
-    .mform-group label {
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--green-dark);
-    }
-    .mform-actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 8px;
-        align-items: center;
-    }
-
+    .manage-form-card, .manage-table-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 40px; margin-bottom: 36px; }
+    .manage-form-card h2, .manage-table-card h2 { font-size: 1.35rem; margin-bottom: 24px; color: var(--green-dark); }
+    .mform-row { display: flex; gap: 16px; margin-bottom: 16px; }
+    .mform-group { display: flex; flex-direction: column; flex: 1; gap: 6px; }
+    .mform-group label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--green-dark); }
+    .mform-actions { display: flex; gap: 12px; margin-top: 8px; align-items: center; }
     .events-table-wrap { overflow-x: auto; }
-    .events-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9rem;
-    }
-    .events-table th {
-        text-align: left;
-        padding: 10px 14px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        border-bottom: 2px solid var(--border);
-    }
-    .events-table td {
-        padding: 12px 14px;
-        border-bottom: 1px solid var(--border);
-        color: var(--text);
-        vertical-align: middle;
-    }
+    .events-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .events-table th { text-align: left; padding: 10px 14px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+    .events-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
     .events-table tbody tr:hover { background: var(--bg-tint); }
     .table-actions { display: flex; gap: 8px; }
-
-    @media (max-width: 640px) {
-        .manage-form-card, .manage-table-card { padding: 24px 20px; }
-        .mform-row { flex-direction: column; }
-    }
+    @media (max-width: 640px) { .manage-form-card, .manage-table-card { padding: 24px 20px; } .mform-row { flex-direction: column; } }
 </style>
 
-<!-- ── Client-side validation ─────────────────────────────── -->
 <script>
+/**
+ * Validates the event form before submitting.
+ * Warns (but does not block) if the chosen date is in the past.
+ *
+ * @param {Event} e - the form submit event
+ */
 document.getElementById('event-form').addEventListener('submit', function (e) {
     const title     = document.getElementById('title').value.trim();
     const eventDate = document.getElementById('eventDate').value;
@@ -339,7 +264,6 @@ document.getElementById('event-form').addEventListener('submit', function (e) {
         const chosen = new Date(eventDate);
         const today  = new Date();
         today.setHours(0, 0, 0, 0);
-        // Warn (not block) if date is in the past
         if (chosen < today) {
             if (!confirm('The selected date is in the past. Continue anyway?')) {
                 e.preventDefault();

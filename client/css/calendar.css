@@ -1,4 +1,10 @@
-/* Import Google font - Poppins */
+/*
+ * Name: Brian, Aloysius, Haoxuan, Jason
+ * Date: March 21, 2026
+ * Description: Styles for the mood-tracking calendar component.
+ *              Covers the calendar grid, day cells, mood emojis, and the stats table.
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .wrapper {
@@ -32,100 +38,96 @@ header .icons span {
     border-radius: 50%;
 }
 
-.icons span:last-child{
+.icons span:last-child {
     margin-right: -10px;
 }
 
-header .icons span:hover{
+header .icons span:hover {
     background: #f2f2f2;
 }
 
-header .current-date{
+header .current-date {
     font-size: 1.45rem;
     font-weight: 500;
 }
 
-.calendar{
+.calendar {
     padding: 20px;
 }
 
-.calendar ul{
+.calendar ul {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     list-style: none;
     text-align: center;
 }
 
-.calendar .days{
+.calendar .days {
     margin-bottom: 20px;
     gap: 4px;
 }
 
-.calendar li{
+.calendar li {
     color: #333;
     font-size: 1.07rem;
 }
 
-.calendar .weeks li{
+.calendar .weeks li {
     font-weight: 500;
     cursor: default;
 }
 
-.calendar .days li{
+.calendar .days li {
     z-index: 1;
     cursor: pointer;
     position: relative;
     margin-top: 0px;
-    height: 90px;   
-    padding-top: 8px; 
+    height: 90px;
+    padding-top: 8px;
 }
 
-.days li.inactive{
+.days li.inactive {
     color: #aaa;
 }
 
-.days li.active{
+.days li.active {
     color: #fff;
 }
 
+/* Rounded rectangle highlight drawn behind each day cell */
 .days li::before {
     position: absolute;
     content: "";
     left: 50%;
     top: 50%;
-
     width: 95%;
     height: 90%;
     border-radius: 14px;
-
     transform: translate(-50%, -50%);
-
-    z-index: -1;
+    z-index: -1; /* sits behind the day number and emoji */
 }
 
 .days li.active::before {
     background: #9B59B6;
 }
 
-.days li:not(.active):hover::before{
+.days li:not(.active):hover::before {
     background: #f2f2f2;
 }
 
 .day-num {
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 6px; 
+    margin-bottom: 6px;
 }
 
 .day-emoji {
     margin-top: 6px;
     font-size: 1.6rem;
-
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
     justify-content: center;
-
     max-height: 40px;
     overflow: hidden;
 }
@@ -164,6 +166,7 @@ header .current-date{
     background: #f5f5f5;
 }
 
+/* z-index needed so these render on top of the ::before highlight */
 .day-num,
 .day-emoji {
     position: relative;
