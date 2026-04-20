@@ -39,7 +39,7 @@ const renderCalendar = () => {
 }
 
 async function loadMoods() {
-    const res = await fetch("Q&A/public_moods.php");
+    const res = await fetch("QandA/public_moods.php");
     const data = await res.json();
 
     for (let date in data) {
@@ -65,7 +65,7 @@ async function loadStats() {
     const container = document.getElementById("mood-stats");
 
     // 1. First ask the backend: Did I make a selection today?
-    const checkRes = await fetch("Q&A/get_today_mood.php");
+    const checkRes = await fetch("QandA/get_today_mood.php");
     const userData = await checkRes.json();
 
     // Not selected → Not displayed
@@ -79,7 +79,7 @@ async function loadStats() {
     }
 
     // 2. Statistics will only load after selection →
-    const res = await fetch("Q&A/public_moods.php");
+    const res = await fetch("QandA/public_moods.php");
     const data = await res.json();
 
     const today = new Date().toISOString().split("T")[0];

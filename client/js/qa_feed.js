@@ -6,7 +6,7 @@ let currentQuestionID = null;
 let answered = false;
 
 function loadQA() {
-    fetch("Q&A/get_qa.php")
+    fetch("QandA/get_qa.php")
         .then(res => res.json())
         .then(data => {
 
@@ -89,7 +89,7 @@ function submitAnswer() {
 
     const text = input.value;
 
-    fetch("Q&A/submit_answer.php", {
+    fetch("QandA/submit_answer.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -130,7 +130,7 @@ document.querySelectorAll(".close-modal").forEach(btn => {
 document.getElementById("submit-question").onclick = async () => {
     const text = document.getElementById("question-input").value;
 
-    const res = await fetch("Q&A/set_question.php", {
+    const res = await fetch("QandA/set_question.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
