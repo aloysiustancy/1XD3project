@@ -6,7 +6,7 @@ require 'db.php';
 $userID = $_SESSION['userId'] ?? null;
 
 $stmt = $pdo->prepare("
-    SELECT emoji FROM moodEntries
+    SELECT emoji FROM moodentries
     WHERE userID <=> ? AND entryDate = CURDATE()
     ORDER BY entryID DESC
     LIMIT 1

@@ -10,7 +10,7 @@ $userID = $_SESSION['userId'] ?? null;
 
 // If it exists -> Update, do not insert.
 $stmt = $pdo->prepare("
-    SELECT entryID FROM moodEntries
+    SELECT entryID FROM moodentries
     WHERE userID <=> ? AND entryDate = CURDATE()
 ");
 $stmt->execute([$userID]);
@@ -19,7 +19,7 @@ $existing = $stmt->fetch();
 
 if ($existing) {
     $stmt = $pdo->prepare("
-        UPDATE moodEntries
+        UPDATE moodentries
         SET emoji = ?
         WHERE entryID = ?
     ");
@@ -31,7 +31,7 @@ if ($existing) {
 
 // Insert new record
 $stmt = $pdo->prepare("
-    INSERT INTO moodEntries (userID, entryDate, emoji)
+    INSERT INTO moodentries (userID, entryDate, emoji)
     VALUES (?, CURDATE(), ?)
 ");
 $stmt->execute([$userID, $emoji]);

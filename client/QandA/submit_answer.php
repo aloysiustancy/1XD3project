@@ -13,7 +13,7 @@ $userID = $_SESSION['userId'] ?? null;
 // Insert answer
 // First check if it has been answered
 $stmt = $pdo->prepare("
-    SELECT * FROM communityAnswers
+    SELECT * FROM communityanswers
     WHERE questionID = ? AND userID <=> ?
 ");
 $stmt->execute([$questionID, $userID]);
@@ -25,7 +25,7 @@ if ($stmt->fetch()) {
 
 // Insert
 $stmt = $pdo->prepare("
-    INSERT INTO communityAnswers (questionID, userID, answerText)
+    INSERT INTO communityanswers (questionID, userID, answerText)
     VALUES (?, ?, ?)
 ");
 $stmt->execute([$questionID, $userID, $answerText]);

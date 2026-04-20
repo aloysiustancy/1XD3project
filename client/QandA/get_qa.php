@@ -6,7 +6,7 @@ require 'db.php';
 $userID = $_SESSION['userId'] ?? null;
 
 $stmt = $pdo->prepare("
-    SELECT * FROM communityQuestions
+    SELECT * FROM communityquestions
     WHERE DATE(postedAt) = CURDATE()
     LIMIT 1
 ");
@@ -20,7 +20,7 @@ if (!$question) {
 
 // Check if the user has answered
 $stmt2 = $pdo->prepare("
-    SELECT answerText FROM communityAnswers
+    SELECT answerText FROM communityanswers
     WHERE questionID = ? AND userID <=> ?
     LIMIT 1
 ");
@@ -30,7 +30,7 @@ $userAnswer = $stmt2->fetch(PDO::FETCH_ASSOC);
 // Randomly retrieve answers from other users (maximum 10).
 $stmt3 = $pdo->prepare("
     SELECT userID, answerText
-    FROM communityAnswers
+    FROM communityanswers
     WHERE questionID = ?
       AND (userID <> ? OR ? IS NULL)
     ORDER BY RAND()

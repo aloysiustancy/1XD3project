@@ -17,7 +17,7 @@ if (!$text) {
 }
 
 $stmtCheck = $pdo->prepare("
-    SELECT COUNT(*) FROM communityQuestions
+    SELECT COUNT(*) FROM communityquestions
     WHERE DATE(postedAt) = CURDATE()
 ");
 $stmtCheck->execute();
@@ -30,7 +30,7 @@ if ($stmtCheck->fetchColumn() > 0) {
 }
 
 $stmt = $pdo->prepare("
-    INSERT INTO communityQuestions (questionText, postedBy, postedAt)
+    INSERT INTO communityquestions (questionText, postedBy, postedAt)
     VALUES (?, ?, NOW())
 ");
 

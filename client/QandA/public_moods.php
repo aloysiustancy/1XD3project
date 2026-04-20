@@ -5,7 +5,7 @@ require 'db.php';
 
 $stmt = $pdo->query("
     SELECT entryDate, emoji, COUNT(*) as count
-    FROM moodEntries
+    FROM moodentries
     GROUP BY entryDate, emoji
 ");
 
