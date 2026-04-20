@@ -1,13 +1,12 @@
 <?php
-header('Content-Type: application/json');
-require_once 'db.php';
-
-// 获取当前 active 问题
 session_start();
+header('Content-Type: application/json');
+require 'db.php';
+// Get the current active issue
 $userID = $_SESSION['userId'] ?? null;
 
 $stmt = $pdo->prepare("
-    SELECT * FROM communityQuestions
+    SELECT * FROM communityquestions
     WHERE DATE(postedAt) = CURDATE()
     LIMIT 1
 ");
@@ -19,19 +18,19 @@ if (!$question) {
     exit;
 }
 
-// 🔥 检查用户是否回答过
+// Check if the user has answered
 $stmt2 = $pdo->prepare("
-    SELECT answerText FROM communityAnswers
+    SELECT answerText FROM communityanswers
     WHERE questionID = ? AND userID <=> ?
     LIMIT 1
 ");
 $stmt2->execute([$question['questionID'], $userID]);
 $userAnswer = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-// 🔥 随机获取其他人的回答（最多10条）
+// Randomly retrieve answers from other users (maximum 10).
 $stmt3 = $pdo->prepare("
     SELECT userID, answerText
-    FROM communityAnswers
+    FROM communityanswers
     WHERE questionID = ?
       AND (userID <> ? OR ? IS NULL)
     ORDER BY RAND()

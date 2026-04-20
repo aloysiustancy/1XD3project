@@ -7,7 +7,7 @@ if (!$_SESSION['isAdmin']) {
     exit;
 }
 
-// 获取今天 quote
+// Get today's quote
 $stmt = $pdo->prepare("
     SELECT * FROM quotes
     WHERE activeDate = CURDATE()
@@ -16,7 +16,7 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $todayQuote = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// 获取明天 quote
+// Get tomorrow's quote
 $stmt = $pdo->prepare("
     SELECT * FROM quotes
     WHERE activeDate = CURDATE() + INTERVAL 1 DAY
@@ -25,10 +25,10 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $tomorrowQuote = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// 如果没有 → 随机选一个（但不改数据库）
+// If not found -> select one randomly (but do not modify the database).
 if (!$tomorrowQuote) {
 
-    // 1️ 随机选（排除 today）
+    // 1️ Random selection (excluding today)
     $stmt = $pdo->prepare("
         SELECT * FROM quotes
         WHERE activeDate IS NULL OR activeDate != CURDATE()
@@ -38,17 +38,17 @@ if (!$tomorrowQuote) {
     $stmt->execute();
     $tomorrowQuote = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 2️ 写入数据库（关键！！！）
+    // 2️ Write to the database
     if ($tomorrowQuote) {
 
-        // 清空旧的 tomorrow
+        // Clear out the old tomorrow
         $pdo->exec("
             UPDATE quotes 
             SET activeDate = NULL 
             WHERE activeDate = CURDATE() + INTERVAL 1 DAY
         ");
 
-        // 设置新的 tomorrow
+        // Set a new tomorrow
         $stmt = $pdo->prepare("
             UPDATE quotes
             SET activeDate = CURDATE() + INTERVAL 1 DAY
@@ -58,7 +58,7 @@ if (!$tomorrowQuote) {
     }
 }
 
-// 获取所有 quote
+// Get all quotes
 $stmt = $pdo->query("SELECT * FROM quotes ORDER BY quoteID DESC");
 $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -217,14 +217,14 @@ table {
 
 <div class="container">
 
-<!-- 🔥 上半部分 -->
+<!-- Upper part -->
 <div class="preview">
     <div style="color:orange; font-size: 20px">Tomorrow's display:</div>
     <blockquote>"<?= htmlspecialchars($tomorrowQuote['quoteText']) ?>"</blockquote>
     <p class="small">— <?= htmlspecialchars($tomorrowQuote['author']) ?></p>
 </div>
 
-<!-- 🔥 下半部分 -->
+<!-- Second half -->
 <table>
 <tr>
     <th>Quote</th>
@@ -238,7 +238,7 @@ table {
 ?>
 <tr id="row-<?= $q['quoteID'] ?>">
 
-    <!-- 1️⃣ Quote -->
+    <!-- 1️ Quote -->
     <td>
         <?= htmlspecialchars($q['quoteText']) ?>
 
@@ -249,12 +249,12 @@ table {
         <?php endif; ?>
     </td>
 
-    <!-- 2️⃣ Author -->
+    <!-- 2️ Author -->
     <td>
         <?= htmlspecialchars($q['author']) ?>
     </td>
 
-    <!-- 3️⃣ Tomorrow -->
+    <!-- 3️ Tomorrow -->
     <td>
         <?php if ($isToday): ?>
             <button class="btn disabled-btn" disabled>
@@ -268,7 +268,7 @@ table {
         <?php endif; ?>
     </td>
 
-    <!-- 4️⃣ Delete -->
+    <!-- 4️ Delete -->
     <td>
         <?php if ($isToday): ?>
             <button class="btn disabled-btn" disabled>
@@ -309,7 +309,7 @@ Back to Community
 <script>
 let currentTomorrow = <?= $tomorrowQuote['quoteID'] ?? 'null' ?>;
 
-// 设置明天
+// Set tomorrow
 function setTomorrow(id) {
 
     if (id === currentTomorrow) {
@@ -332,7 +332,7 @@ function setTomorrow(id) {
     });
 }
 
-// 删除
+// delete
 function deleteQuote(id){
 
     showConfirm("Are you sure to delete this quote?", () => {

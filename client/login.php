@@ -11,6 +11,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn = new mysqli("localhost", "tana42_local", "+im}Zbr.", "tana42_db");
+    //$conn = new mysqli("localhost", "caij95_local", "J(gqn9V%", "caii95_db");
     //$conn = new mysqli("localhost", "root", "", "caij95_db");
 
     if ($conn->connect_error) {

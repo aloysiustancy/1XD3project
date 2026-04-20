@@ -294,15 +294,15 @@ if (!isset($_SESSION['userId'])) {
         font-weight: 600;
         margin: 10px 0 14px;
 
-        /* 渐变文字 */
+        /* Gradient text */
         background: linear-gradient(90deg, #ff7338, #ff5c25);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
 
-        /* 发光效果 */
+        /* Glowing effect */
         text-shadow: 0 0 8px rgba(44,95,46,0.25);
 
-        /* 动画 */
+        /* Animation */
         animation: glowPulse 2.5s infinite alternate;
     }
 
@@ -419,7 +419,7 @@ if (!isset($_SESSION['userId'])) {
                 <div id="mood-stats"></div>
             </div>
 
-            <!-- Community Q&A -->
+            <!-- Community qanda -->
             <div class="feature-card">
                 <div class="feature-icon">🌿</div>
                 <h3>Moderator Q&amp;A</h3>

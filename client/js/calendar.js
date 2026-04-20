@@ -22,7 +22,6 @@ const renderCalendar = () => {
         let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
                      && currYear === new Date().getFullYear() ? "active" : "";
         
-        // 🔥 加在这里（补0）
         const month = String(currMonth + 1).padStart(2, '0');
         const day = String(i).padStart(2, '0');
 
@@ -40,7 +39,7 @@ const renderCalendar = () => {
 }
 
 async function loadMoods() {
-    const res = await fetch("Q&A/public_moods.php");
+    const res = await fetch("qanda/public_moods.php");
     const data = await res.json();
 
     for (let date in data) {
@@ -65,11 +64,11 @@ async function loadStats() {
 
     const container = document.getElementById("mood-stats");
 
-    // ✅ 1. 先问后端：我今天选了吗？
-    const checkRes = await fetch("Q&A/get_today_mood.php");
+    // 1. First ask the backend: Did I make a selection today?
+    const checkRes = await fetch("qanda/get_today_mood.php");
     const userData = await checkRes.json();
 
-    // ❌ 没选 → 不显示
+    // Not selected → Not displayed
     if (!userData.exists) {
         container.innerHTML = `
         <p style="color: red; text-align:center; font-size:20px">
@@ -79,8 +78,8 @@ async function loadStats() {
         return;
     }
 
-    // ✅ 2. 选了 → 才加载统计
-    const res = await fetch("Q&A/public_moods.php");
+    // 2. Statistics will only load after selection →
+    const res = await fetch("qanda/public_moods.php");
     const data = await res.json();
 
     const today = new Date().toISOString().split("T")[0];
@@ -115,7 +114,7 @@ async function loadStats() {
     container.innerHTML = html;
 }
 
-// 在 render 后调用
+// Called after render
 updateCalendar();
 loadStats();
 

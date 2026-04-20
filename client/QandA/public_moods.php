@@ -1,9 +1,11 @@
 <?php
+session_start();
+header('Content-Type: application/json');
 require 'db.php';
 
 $stmt = $pdo->query("
     SELECT entryDate, emoji, COUNT(*) as count
-    FROM moodEntries
+    FROM moodentries
     GROUP BY entryDate, emoji
 ");
 

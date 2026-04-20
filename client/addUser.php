@@ -6,6 +6,9 @@ $servername = "localhost";
 $username = "tana42_local";
 $password = "+im}Zbr.";
 $dbname = "tana42_db";
+//$username = "caij95_local";
+//$password = "J(gqn9V%";
+//$dbname = "caii95_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

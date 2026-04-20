@@ -6,7 +6,7 @@ let currentQuestionID = null;
 let answered = false;
 
 function loadQA() {
-    fetch("Q&A/get_qa.php")
+    fetch("qanda/get_qa.php")
         .then(res => res.json())
         .then(data => {
 
@@ -28,7 +28,7 @@ function loadQA() {
             questionEl.textContent = q.questionText;
             currentQuestionID = q.questionID;
 
-            // 已回答
+            // Answered
             if (data.userAnswer) {
                 answered = true;
 
@@ -40,7 +40,7 @@ function loadQA() {
                 answerBox.classList.remove("hidden");
             }
 
-            // 🔥 显示别人答案
+            // Show other people's answers
             if (data.others && data.others.length > 0) {
                 let html = `
                     <table class="qa-table">
@@ -89,7 +89,7 @@ function submitAnswer() {
 
     const text = input.value;
 
-    fetch("Q&A/submit_answer.php", {
+    fetch("qanda/submit_answer.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -110,7 +110,7 @@ function submitAnswer() {
 
         showModal("Saved!", "Your answer has been recorded.");
 
-        loadQA(); // 🔥刷新
+        loadQA();
     });
 }
 
@@ -119,18 +119,18 @@ function showQuestionModal() {
     document.getElementById("question-modal").classList.remove("hidden");
 }
 
-    // 关闭按钮
+    // Close button
 document.querySelectorAll(".close-modal").forEach(btn => {
     btn.onclick = () => {
         btn.closest(".modal").classList.add("hidden");
     };
 });
 
-// 提交问题
+// Submit an issue
 document.getElementById("submit-question").onclick = async () => {
     const text = document.getElementById("question-input").value;
 
-    const res = await fetch("Q&A/set_question.php", {
+    const res = await fetch("qanda/set_question.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -146,13 +146,13 @@ document.getElementById("submit-question").onclick = async () => {
 
         showModal("Success", "Question added!");
 
-        // 关闭弹窗
+        // Close pop-up window
         document.getElementById("question-modal").classList.add("hidden");
 
-        // 清空输入框
+        // Clear input box
         document.getElementById("question-input").value = "";
 
-        // 刷新页面数据
+        // Refresh page data
         loadQA();
 
     } else {

@@ -7,7 +7,7 @@ if (!$_SESSION['isAdmin']) exit;
 $data = json_decode(file_get_contents("php://input"), true);
 $id = $data['id'];
 
-// 🔥 1. 删除 quote（不能删 today）
+// 1. Delete the quote (but not today).
 $stmt = $pdo->prepare("
     DELETE FROM quotes 
     WHERE quoteID = ? 
@@ -15,7 +15,7 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$id]);
 
-// 🔥 2. 检查 tomorrow 是否还存在
+// 2. Check if tomorrow still exists.
 $stmt = $pdo->query("
     SELECT * FROM quotes 
     WHERE activeDate = CURDATE() + INTERVAL 1 DAY
@@ -23,10 +23,10 @@ $stmt = $pdo->query("
 ");
 $tomorrow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// 🔥 3. 如果 tomorrow 没了 → 自动补一个
+// 3. If "tomorrow" is missing -> it will be automatically added.
 if (!$tomorrow) {
 
-    // ❗随机选一个（排除 today）
+    // Choose one randomly (excluding today).
     $stmt = $pdo->query("
         SELECT * FROM quotes
         WHERE activeDate IS NULL

@@ -5,6 +5,8 @@ define('DB_NAME', 'tana42_db');
 define('DB_USER', 'tana42_local');               
 define('DB_PASS', '+im}Zbr.');   
 //define('DB_NAME', 'caij95_db');  
+//define('DB_USER', 'caij95_local');               
+//define('DB_PASS', 'J(gqn9V%');   
 //define('DB_USER', 'root');               
 //define('DB_PASS', '');   
 define('DB_CHARSET', 'utf8mb4');
