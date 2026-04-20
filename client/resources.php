@@ -101,12 +101,12 @@
 <!-- ══ FOR READING ══════════════════════════════════════════ -->
 <section class="section">
     <div class="centered-block">
-        <div class="resource-section-label">📖 For Reading</div>
+        <div class="resource-section-label">For Reading</div>
         <div class="resource-grid">
 
             <div class="resource-card">
                 <div class="resource-card-image">
-                    <img src="https://placehold.co/300x420/ddecd6/2c5f2e?text=Atomic+Habits" alt="Atomic Habits by James Clear">
+                    <img src="images/1resources.jpg" alt="Atomic Habits by James Clear">
                 </div>
                 <div class="resource-card-body">
                     <h3>Atomic Habits</h3>
@@ -134,12 +134,12 @@
 <!-- ══ FOR WATCHING ═════════════════════════════════════════ -->
 <section class="section section-tinted">
     <div class="centered-block">
-        <div class="resource-section-label">🎬 For Watching</div>
+        <div class="resource-section-label">For Watching</div>
         <div class="resource-grid">
 
             <div class="resource-card">
                 <div class="resource-card-image">
-                    <img src="https://placehold.co/300x420/ddecd6/2c5f2e?text=Headspace%3A+Guide+to+Meditation" alt="Headspace Guide to Meditation on Netflix">
+                    <img src="images/2resources.jpg" alt="Headspace Guide to Meditation on Netflix">
                 </div>
                 <div class="resource-card-body">
                     <h3>Headspace: Guide to Meditation</h3>
@@ -153,7 +153,7 @@
 
             <div class="resource-card">
                 <div class="resource-card-image">
-                    <img src="https://placehold.co/300x420/ddecd6/2c5f2e?text=Headspace%3A+Guide+to+Sleep" alt="Headspace Guide to Sleep on Netflix">
+                    <img src="images/3resources.jpg" alt="Headspace Guide to Sleep on Netflix">
                 </div>
                 <div class="resource-card-body">
                     <h3>Headspace: Guide to Sleep</h3>
@@ -167,7 +167,7 @@
 
             <div class="resource-card">
                 <div class="resource-card-image">
-                    <img src="https://placehold.co/300x420/ddecd6/2c5f2e?text=Headspace%3A+Unwind+Your+Mind" alt="Headspace Unwind Your Mind Interactive">
+                    <img src="images/4resources.jpg" alt="Headspace Unwind Your Mind Interactive">
                 </div>
                 <div class="resource-card-body">
                     <h3>Headspace: Unwind Your Mind</h3>
@@ -186,7 +186,7 @@
 <!-- ══ MCMASTER COURSES ═════════════════════════════════════ -->
 <section class="section">
     <div class="centered-block">
-        <div class="resource-section-label">🎓 Courses at McMaster</div>
+        <div class="resource-section-label">Courses at McMaster</div>
         <div class="course-grid">
 
             <div class="course-card">

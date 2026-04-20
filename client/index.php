@@ -159,7 +159,7 @@
 </section>
 
 <!-- ══ BREATHING MODULE ════════════════════════════════════════ -->
-<!-- <section class="section" id="breathing-section">
+<section class="section" id="breathing-section">
     <div class="centered-block">
         <h2 class="section-heading">Take a Moment</h2>
         <p>Try our guided breathing exercise right here.</p>
@@ -167,7 +167,7 @@
             <?php include 'breathing.html'; ?>
         </div>
     </div>
-</section> -->
+</section>
 
 <script src="js/eventCountdown.js?v=<?= filemtime('js/eventCountdown.js') ?>"></script>
 <?php include 'includes/footer.php'; ?>

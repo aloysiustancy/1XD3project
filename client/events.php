@@ -119,7 +119,7 @@
             <!-- Event 1 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=MacRehab+x+Mindfulness"
+                    <img src="images/1events.png"
                          alt="MacRehab x Mindfulness Meditative Yoga">
                 </div>
                 <div class="event-card-body">
@@ -135,7 +135,7 @@
             <!-- Event 2 -->
             <div class="event-card event-card-reverse">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindfulness+%26+Creativity"
+                    <img src="images/2events.png"
                          alt="Mindfulness and Creativity Workshop">
                 </div>
                 <div class="event-card-body">
@@ -157,7 +157,7 @@
             <!-- Event 3 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Dr.+JP+Pawliw-Fry"
+                    <img src="images/3events.png"
                          alt="Mindfulness with Dr. JP Pawliw-Fry">
                 </div>
                 <div class="event-card-body">
@@ -174,7 +174,7 @@
             <!-- Event 4 -->
             <div class="event-card event-card-reverse">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindful+Self+Compassion"
+                    <img src="images/4events.png"
                          alt="Mindful Self Compassion Workshop">
                 </div>
                 <div class="event-card-body">
@@ -191,7 +191,7 @@
             <!-- Event 5 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindful+Body+Scan"
+                    <img src="images/6events.png"
                          alt="Mindful Body Scan — First Event">
                 </div>
                 <div class="event-card-body">
