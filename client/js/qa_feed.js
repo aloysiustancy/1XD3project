@@ -6,7 +6,7 @@ let currentQuestionID = null;
 let answered = false;
 
 function loadQA() {
-    fetch("QandA/get_qa.php")
+    fetch("/~tana42/team/client/QandA/get_qa.php")
         .then(res => res.json())
         .then(data => {
 
@@ -89,7 +89,7 @@ function submitAnswer() {
 
     const text = input.value;
 
-    fetch("QandA/submit_answer.php", {
+    fetch("/~tana42/team/client/QandA/submit_answer.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -130,7 +130,7 @@ document.querySelectorAll(".close-modal").forEach(btn => {
 document.getElementById("submit-question").onclick = async () => {
     const text = document.getElementById("question-input").value;
 
-    const res = await fetch("QandA/set_question.php", {
+    const res = await fetch("/~tana42/team/client/QandA/set_question.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

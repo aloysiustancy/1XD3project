@@ -19,7 +19,7 @@ function submitMood(emoji, btn) {
     }
 
     // Submit to backend
-    fetch("QandA/submit_mood.php", {
+    fetch("/~tana42/team/client/QandA/submit_mood.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -57,7 +57,7 @@ function submitMood(emoji, btn) {
 
 // Called when the page loads
 function checkTodayMood() {
-    fetch("QandA/get_today_mood.php")
+    fetch("/~tana42/team/client/QandA/get_today_mood.php")
         .then(res => res.json())
         .then(data => {
 
