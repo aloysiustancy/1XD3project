@@ -4,6 +4,8 @@
 // Community page — displays Wall of Wisdom, Gesture Poll, Calendar, and Moderator Q&A features
 
 session_start();
+//$_SESSION['userId'] = 1;
+//$_SESSION['isAdmin'] = true;
 
 if (!isset($_SESSION['userId'])) {
     header('Location: login.php');

@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', 0);
 /*
  * Name: Brian, Aloysius, Haoxuan, Jason
  * Date: March 21, 2026
@@ -8,6 +9,7 @@
  */
 
 session_start();
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
     http_response_code(403);
@@ -15,8 +17,15 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
     exit;
 }
 
-header('Content-Type: application/json');
-require_once '../quotes/db.php';
+/* ── DB connection ── */
+try {
+    $dsn = "mysql:host=localhost;dbname=tana42_db;charset=utf8mb4";
+    $pdo = new PDO($dsn, 'tana42_local', '+im}Zbr.');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
+}
 
 $title     = trim($_POST['title']     ?? '');
 $eventDate = trim($_POST['eventDate'] ?? '');

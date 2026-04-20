@@ -145,6 +145,29 @@ let currentTomorrow = <?= $tomorrowQuote['quoteID'] ?? 'null' ?>;
  * @param {number} id - quoteID to schedule
  */
 function setTomorrow(id) {
+
+    if (id === currentTomorrow) {
+        showModal("Notice", "You have selected this quote");
+        return;
+    }
+
+    fetch("set_tomorrow_quote.php", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({id})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.success){
+            showModal("Success", "Congratulations, successful setup.", () => {
+                location.reload();
+            });
+        }
+    });
+}
+
+// delete
+function deleteQuote(id){
     if (id === currentTomorrow) { showModal("Notice", "You have selected this quote"); return; }
     fetch("set_tomorrow_quote.php", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({id}) })
         .then(res => res.json())
@@ -157,6 +180,32 @@ function setTomorrow(id) {
  */
 function deleteQuote(id) {
     showConfirm("Are you sure to delete this quote?", () => {
+        fetch("delete_quote.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showModal("Deleted", "Quote deleted successfully.", () => {
+                    location.reload();
+                });
+            } else {
+                // Error message displayed
+                showModal("Error", data.error || "Failed to delete quote");
+            }
+        })
+        .catch(err => {
+            // Network error detected
+            console.error(err);
+            showModal("Error", "Network error: " + err.message);
+        });
+    });
+}
+
         fetch("delete_quote.php", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({id}) })
             .then(res => res.json())
             .then(data => { if (data.success) showModal("Deleted", "Quote deleted successfully.", () => location.reload()); });

@@ -58,6 +58,8 @@ function submitMood(emoji, btn) {
  * If so, highlights their emoji and locks the picker.
  */
 function checkTodayMood() {
+    moodLocked = false;
+    todayEmoji = null;
     fetch("qanda/get_today_mood.php")
         .then(res => res.json())
         .then(data => {

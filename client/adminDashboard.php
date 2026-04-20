@@ -13,7 +13,9 @@ if (!isset($_SESSION['userId']) || $_SESSION['isAdmin'] != 1) {
 /* ── Fetch admin's first name for the welcome heading ── */
 $adminName = 'Admin';
 try {
-    require_once __DIR__ . '/includes/connect.php';
+    $dsn = "mysql:host=localhost;dbname=tana42_db;charset=utf8mb4";
+    $pdo = new PDO($dsn, 'tana42_local', '+im}Zbr.');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $stmt = $pdo->prepare(
         "SELECT ui.firstName FROM UserInfo ui WHERE ui.userId = ? LIMIT 1"
     );
