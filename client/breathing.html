@@ -1,48 +1,276 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Breathing Exercise</title>
-<link rel="stylesheet" href="style.css">
-<style>
-    canvas{
-        background:#020617;
-        border-radius:50%;
+<!-- ══ BREATHING EXERCISE ════════════════════════════════════════
+     Drop into breathing.css for custom styling.
+     Requires no external dependencies.
+════════════════════════════════════════════════════════════════ -->
+
+<div class="br-root">
+
+    <!-- Pattern selector -->
+    <div class="br-tabs" role="tablist" aria-label="Breathing pattern">
+        <button class="br-tab active" data-pattern="478"    role="tab" aria-selected="true">4-7-8 Relaxation</button>
+        <button class="br-tab"        data-pattern="box"    role="tab" aria-selected="false">Box (4-4-4-4)</button>
+        <button class="br-tab"        data-pattern="calm"   role="tab" aria-selected="false">Calm (4-6)</button>
+    </div>
+
+    <!-- Canvas + overlay text -->
+    <div class="br-canvas-wrap" aria-live="polite" aria-atomic="true">
+        <canvas id="brCircle" width="240" height="240" aria-hidden="true"></canvas>
+        <div class="br-center-text">
+            <div class="br-phase" id="brPhase">Ready</div>
+            <div class="br-count" id="brCount">—</div>
+        </div>
+    </div>
+
+    <!-- Start / Reset -->
+    <div class="br-controls">
+        <button class="br-btn br-btn--primary" id="brStart">Start</button>
+        <button class="br-btn"                 id="brReset" hidden>Reset</button>
+    </div>
+
+    <!-- Cycle tracker -->
+    <div class="br-cycle-info">
+        <div class="br-cycle-label" id="brCycleLabel">Cycles: 0</div>
+        <div class="br-dots" id="brDots" aria-hidden="true"></div>
+    </div>
+
+    <!-- Contextual tip -->
+    <p class="br-tip" id="brTip">
+        A natural tranquilizer for the nervous system.
+    </p>
+
+</div>
+
+<script>
+(function () {
+
+    /* ── Patterns ─────────────────────────────────────────────── */
+    var PATTERNS = {
+        '478': {
+            phases: [
+                { label: 'Inhale', secs: 4 },
+                { label: 'Hold',   secs: 7 },
+                { label: 'Exhale', secs: 8 }
+            ],
+            totalCycles: 4,
+            tip: 'Inhale 4 sec \u00b7 hold 7 sec \u00b7 exhale 8 sec. A natural tranquilizer for the nervous system.'
+        },
+        'box': {
+            phases: [
+                { label: 'Inhale', secs: 4 },
+                { label: 'Hold',   secs: 4 },
+                { label: 'Exhale', secs: 4 },
+                { label: 'Hold',   secs: 4 }
+            ],
+            totalCycles: 4,
+            tip: 'Equal sides, equal calm. Used to build focus and reduce stress under pressure.'
+        },
+        'calm': {
+            phases: [
+                { label: 'Inhale', secs: 4 },
+                { label: 'Exhale', secs: 6 }
+            ],
+            totalCycles: 6,
+            tip: 'Simple and effective. A longer exhale activates the parasympathetic nervous system.'
+        }
+    };
+
+    /* ── DOM refs ─────────────────────────────────────────────── */
+    var canvas     = document.getElementById('brCircle');
+    var ctx        = canvas.getContext('2d');
+    var phaseEl    = document.getElementById('brPhase');
+    var countEl    = document.getElementById('brCount');
+    var startBtn   = document.getElementById('brStart');
+    var resetBtn   = document.getElementById('brReset');
+    var cycleLabel = document.getElementById('brCycleLabel');
+    var dotsEl     = document.getElementById('brDots');
+    var tipEl      = document.getElementById('brTip');
+
+    /* ── State ────────────────────────────────────────────────── */
+    var pat        = PATTERNS['478'];
+    var running    = false;
+    var raf        = null;
+    var phaseIndex = 0;
+    var cyclesDone = 0;
+    var phaseStart = null;
+
+    /* ── Canvas constants ─────────────────────────────────────── */
+    var CX = 120, CY = 120, R = 90, TRACK_W = 12;
+
+    /* Phase → arc colour (matches MMC green palette) */
+    var PHASE_COLORS = {
+        'Inhale': '#2c5f2e',   /* forest green */
+        'Hold'  : '#3a6186',   /* slate blue   */
+        'Exhale': '#5c4a7f'    /* soft purple  */
+    };
+
+    /* ── Helpers ──────────────────────────────────────────────── */
+    function cssVar(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#ccc';
     }
 
-    button{
-        padding:10px 20px;
-        font-size:16px;
-        border:none;
-        border-radius:6px;
-        cursor:pointer;
+    function innerR(label, progress) {
+        var lo = 28, hi = 70;
+        if (label === 'Inhale') return lo + (hi - lo) * progress;
+        if (label === 'Exhale') return lo + (hi - lo) * (1 - progress);
+        return (lo + hi) / 2;
     }
 
-    #startBtn{
-        background:#22c55e;
+    /* ── Draw ─────────────────────────────────────────────────── */
+    function draw(progress, phaseIdx) {
+        ctx.clearRect(0, 0, 240, 240);
+        var phase  = pat.phases[phaseIdx % pat.phases.length];
+        var color  = PHASE_COLORS[phase.label] || '#2c5f2e';
+        var track  = 'rgba(0,0,0,0.08)';
+
+        /* Track ring */
+        ctx.beginPath();
+        ctx.arc(CX, CY, R, 0, Math.PI * 2);
+        ctx.strokeStyle = track;
+        ctx.lineWidth   = TRACK_W;
+        ctx.stroke();
+
+        /* Progress arc */
+        var start = -Math.PI / 2;
+        ctx.beginPath();
+        ctx.arc(CX, CY, R, start, start + progress * Math.PI * 2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth   = TRACK_W;
+        ctx.lineCap     = 'round';
+        ctx.stroke();
+
+        /* Breathing bubble */
+        var bR = innerR(phase.label, progress);
+        ctx.beginPath();
+        ctx.arc(CX, CY, bR, 0, Math.PI * 2);
+        ctx.fillStyle = color + '28';
+        ctx.fill();
     }
 
-    #stopBtn{
-        background:#ef4444;
+    function drawIdle() {
+        ctx.clearRect(0, 0, 240, 240);
+        var track = 'rgba(0,0,0,0.08)';
+        ctx.beginPath();
+        ctx.arc(CX, CY, R, 0, Math.PI * 2);
+        ctx.strokeStyle = track;
+        ctx.lineWidth   = TRACK_W;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(CX, CY, 36, 0, Math.PI * 2);
+        ctx.fillStyle = track;
+        ctx.fill();
     }
-</style>
 
+    /* ── Dots ─────────────────────────────────────────────────── */
+    function buildDots() {
+        dotsEl.innerHTML = '';
+        for (var i = 0; i < pat.totalCycles; i++) {
+            var d = document.createElement('div');
+            d.className = 'br-dot';
+            dotsEl.appendChild(d);
+        }
+    }
 
-</head>
+    function updateDots() {
+        var dots = dotsEl.querySelectorAll('.br-dot');
+        dots.forEach(function (d, i) {
+            d.classList.remove('done', 'current');
+            if (i < cyclesDone)              d.classList.add('done');
+            else if (i === cyclesDone && running) d.classList.add('current');
+        });
+    }
 
-<body>
+    /* ── Animation loop ───────────────────────────────────────── */
+    function tick(ts) {
+        if (!phaseStart) phaseStart = ts;
+        var phase   = pat.phases[phaseIndex];
+        var elapsed = (ts - phaseStart) / 1000;
+        var progress = Math.min(elapsed / phase.secs, 1);
+        var remaining = Math.max(Math.ceil(phase.secs - elapsed), 0);
 
-<h1>Breathing Exercise</h1>
+        phaseEl.textContent = phase.label;
+        countEl.textContent = remaining;
+        draw(progress, phaseIndex);
 
-<div class="container">
+        if (elapsed >= phase.secs) {
+            phaseIndex++;
+            phaseStart = ts;
 
-<canvas id="breathingCanvas" width="250" height="250"></canvas>
+            if (phaseIndex >= pat.phases.length) {
+                phaseIndex = 0;
+                cyclesDone++;
+                cycleLabel.textContent = 'Cycles: ' + cyclesDone;
+                updateDots();
+                if (cyclesDone >= pat.totalCycles) { finish(); return; }
+            }
+        }
+        raf = requestAnimationFrame(tick);
+    }
 
-<h2 id="instruction">Press Start</h2>
+    /* ── Controls ─────────────────────────────────────────────── */
+    function start() {
+        running    = true;
+        phaseIndex = 0;
+        cyclesDone = 0;
+        phaseStart = null;
+        cycleLabel.textContent = 'Cycles: 0';
+        buildDots();
+        updateDots();
+        startBtn.hidden = true;
+        resetBtn.hidden = false;
+        raf = requestAnimationFrame(tick);
+    }
 
-<button id="startBtn">Start</button>
-<button id="stopBtn">Stop</button>
+    function reset() {
+        if (raf) cancelAnimationFrame(raf);
+        running    = false;
+        phaseIndex = 0;
+        cyclesDone = 0;
+        phaseStart = null;
+        phaseEl.textContent    = 'Ready';
+        countEl.textContent    = '—';
+        cycleLabel.textContent = 'Cycles: 0';
+        startBtn.textContent   = 'Start';
+        startBtn.hidden        = false;
+        resetBtn.hidden        = true;
+        buildDots();
+        drawIdle();
+    }
 
-<script src="js/breathing.js"></script>
-</body>
-</html>
+    function finish() {
+        running = false;
+        phaseEl.textContent  = 'Done';
+        countEl.textContent  = '✓';
+        startBtn.textContent = 'Restart';
+        startBtn.hidden      = false;
+        updateDots();
+    }
+
+    /* ── Event listeners ──────────────────────────────────────── */
+    startBtn.addEventListener('click', function () {
+        if (raf) cancelAnimationFrame(raf);
+        start();
+    });
+
+    resetBtn.addEventListener('click', reset);
+
+    document.querySelectorAll('.br-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            if (raf) cancelAnimationFrame(raf);
+            document.querySelectorAll('.br-tab').forEach(function (t) {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            pat = PATTERNS[tab.dataset.pattern];
+            tipEl.textContent = pat.tip;
+            reset();
+        });
+    });
+
+    /* ── Init ─────────────────────────────────────────────────── */
+    buildDots();
+    drawIdle();
+
+}());
+</script>

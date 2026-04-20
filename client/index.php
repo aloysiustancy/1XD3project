@@ -159,59 +159,13 @@
 </section>
 
 <!-- ══ BREATHING MODULE ════════════════════════════════════════ -->
-<!-- <section class="section" id="breathing-section">
+<section class="section" id="breathing-section">
     <div class="centered-block">
         <h2 class="section-heading">Take a Moment</h2>
         <p>Try our guided breathing exercise right here.</p>
         <div class="breathing-wrapper">
             <?php include 'breathing.html'; ?>
         </div>
-    </div>
-</section> -->
-
-<!-- ══ CONTACT ════════════════════════════════════════════════ -->
-<section id="contact" class="section section-tinted">
-    <div class="centered-block">
-        <h2 class="section-heading">Contact Us</h2>
-        <p class="contact-email">
-            Email us at <a href="mailto:macmmc@mcmaster.ca">macmmc@mcmaster.ca</a>
-        </p>
-        <div id="contact-social">
-            <a href="https://www.facebook.com/McMasterMindfulnessClub" target="_blank" aria-label="Facebook" class="social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                </svg>
-            </a>
-            <a href="https://www.instagram.com/mcmastermindfulnessclub/" target="_blank" aria-label="Instagram" class="social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-            </a>
-        </div>
-
-        <form id="contact-form" action="#" method="post">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your email" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" placeholder="Subject">
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Your message or suggestion…"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
     </div>
 </section>
 

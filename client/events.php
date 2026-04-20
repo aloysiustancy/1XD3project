@@ -1,4 +1,43 @@
 <?php include 'includes/header.php'; ?>
+<style>
+    .page-hero {
+        position: relative;
+        width: 100%;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2c5f2e;
+    }
+    .page-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, rgba(44,95,46,0.45) 0%, rgba(122,0,60,0.30) 100%);
+    }
+    .page-hero-content {
+        position: relative;
+        text-align: center;
+        padding: 36px 48px;
+        max-width: 640px;
+        background-color: rgba(44, 95, 46, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    .page-hero-content h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.16rem, 6vw, 3.6rem);
+        color: #fff;
+        text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+        margin-bottom: 12px;
+    }
+    .page-hero-content p {
+        color: rgba(255,255,255,0.85);
+        font-size: 1.2rem;
+        margin: 0;
+    }
+</style>
 
 <!-- ══ PAGE HERO ═══════════════════════════════════════════════ -->
 <header class="page-hero">
@@ -80,7 +119,7 @@
             <!-- Event 1 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=MacRehab+x+Mindfulness"
+                    <img src="images/1events.png"
                          alt="MacRehab x Mindfulness Meditative Yoga">
                 </div>
                 <div class="event-card-body">
@@ -96,7 +135,7 @@
             <!-- Event 2 -->
             <div class="event-card event-card-reverse">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindfulness+%26+Creativity"
+                    <img src="images/2events.png"
                          alt="Mindfulness and Creativity Workshop">
                 </div>
                 <div class="event-card-body">
@@ -118,7 +157,7 @@
             <!-- Event 3 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Dr.+JP+Pawliw-Fry"
+                    <img src="images/3events.png"
                          alt="Mindfulness with Dr. JP Pawliw-Fry">
                 </div>
                 <div class="event-card-body">
@@ -135,7 +174,7 @@
             <!-- Event 4 -->
             <div class="event-card event-card-reverse">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindful+Self+Compassion"
+                    <img src="images/4events.png"
                          alt="Mindful Self Compassion Workshop">
                 </div>
                 <div class="event-card-body">
@@ -152,7 +191,7 @@
             <!-- Event 5 -->
             <div class="event-card">
                 <div class="event-card-image">
-                    <img src="https://placehold.co/700x480/ddecd6/2c5f2e?text=Mindful+Body+Scan"
+                    <img src="images/6events.png"
                          alt="Mindful Body Scan — First Event">
                 </div>
                 <div class="event-card-body">
