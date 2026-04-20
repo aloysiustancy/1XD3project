@@ -57,6 +57,8 @@ function submitMood(emoji, btn) {
 
 // Called when the page loads
 function checkTodayMood() {
+    moodLocked = false;
+    todayEmoji = null;
     fetch("qanda/get_today_mood.php")
         .then(res => res.json())
         .then(data => {
