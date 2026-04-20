@@ -419,7 +419,7 @@ if (!isset($_SESSION['userId'])) {
                 <div id="mood-stats"></div>
             </div>
 
-            <!-- Community QandA -->
+            <!-- Community qanda -->
             <div class="feature-card">
                 <div class="feature-icon">🌿</div>
                 <h3>Moderator Q&amp;A</h3>
